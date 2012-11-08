@@ -48,7 +48,7 @@ template "/etc/ssh/ssh_known_hosts" do
   source "known_hosts.erb"
   mode 0444
   owner "root"
-  group "root"
+  group platform?("freebsd") ? "wheel" : "root"
   backup false
   variables(
     :nodes => nodes
