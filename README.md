@@ -1,38 +1,136 @@
 Chef SSH Known Hosts Cookbook
 =============================
-Build /etc/ssh/known_hosts based on search indexes and build it based on data retrieved by ohai.
+The Chef `ssh_known_hosts` cookbook exposes an LWRP and default recipe for adding hosts and keys to the `/etc/ssh_known_hosts` file.
+
+- The default recipe builds `/etc/ssh/known_hosts` based on search indexes and ohai data.
+- The LWRP provides a way to add custom entries in your own recipes.
 
 You can also optionally put other host keys in a data bag called "ssh_known_hosts".
 See below for details.
 
 Requirements
 ------------
-Should work on any platform that uses `/etc/ssh/known_hosts`.
-
-Requires Chef Server for search.
+- An operating system that supports `/etc/ssh/ssh_known_hosts`
+- (Chef Search is required for the default recipe, but not the LWRP)
 
 Usage
 -----
-Searches the Chef Server for all hosts that have SSH host keys and
-generates an `/etc/ssh/known_hosts`.
+### LWRP
+This LWRP is pretty freakin' simple:
 
+```ruby
+ssh_known_hosts_entry 'github.com'
+```
 
-### Adding custom host keys
-If you want to add custom host keys for hosts not in your Chef deployment (such
-as github.com, for example), create a data bag called "`ssh_known_hosts`" and add
-an item for each host to it that looks like this:
+This will append an entry in `/etc/ssh/ssh_known_hosts` like this:
 
-    {
-      "id": "github",
-      "fqdn": "github.com",
-      "rsa": "github-rsa-host-key"
-    }
+```text
+# github.com SSH-2.0-OpenSSH_5.5p1 Debian-6+squeeze1+github8
+github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+```
 
-You can also specify the following optional values in the data bag:
+You can optionally specify your own key, if you don't want to use `ssh-keyscan`:
 
-* ipaddress : Will be resolved from the fqdn value if not specified
-* hostname : Short hostname form of the host without domain name
-* dsa : If the host has a dsa host key, specify it as "dsa" instead of "rsa"
+```ruby
+ssh_known_hosts_entry 'github.com' do
+  key 'node.example.com ssh-rsa ...'
+end
+```
+
+##### LWRP Attributes
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Example</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>host</td>
+      <td>the host to add</td>
+      <td><tt>github.com</tt></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>key</td>
+      <td>(optional) provide your own key</td>
+      <td><tt>ssh-rsa ...</tt></td>
+      <td><tt>ssh-keyscan -H #{host}</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+- - -
+
+### Default Recipe
+Searches the Chef Server for all hosts that have SSH host keys and generates an `/etc/ssh/ssh_known_hosts`.
+
+#### Adding custom host keys
+There are two ways to add custom host keys. You can either use the provided LWRP (see above), or by creating a data bag called "`ssh_known_hosts`" and adding an item for each host:
+
+```javascript
+{
+  "id": "github",
+  "fqdn": "github.com",
+  "rsa": "github-rsa-host-key"
+}
+```
+
+There are additional optional values you may use in the data bag:
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Example</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>a unique id for this data bag entry</td>
+      <td><tt>github</tt></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>fqdn</td>
+      <td>the fqdn of the host</td>
+      <td><tt>github.com</tt></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>rsa</td>
+      <td>the rsa key for this server</td>
+      <td><tt>ssh-rsa AAAAB3...</tt></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>ipaddress</td>
+      <td>the ipaddress of the node (if fqdn is missing)</td>
+      <td><tt>1.1.1.1</tt></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>hostname</td>
+      <td>local hostname of the server (if not a fqdn)</td>
+      <td><tt>myserver.local</tt></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>dsa</td>
+      <td>the dsa key for this server</td>
+      <td><tt>ssh-dsa ABAAC3...</tt></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
 License and Authors
 --------------------
