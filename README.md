@@ -1,26 +1,23 @@
-Description
-===========
-
+Chef SSH Known Hosts Cookbook
+=============================
 Build /etc/ssh/known_hosts based on search indexes and build it based on data retrieved by ohai.
+
 You can also optionally put other host keys in a data bag called "ssh_known_hosts".
 See below for details.
 
 Requirements
-============
-
+------------
 Should work on any platform that uses `/etc/ssh/known_hosts`.
 
 Requires Chef Server for search.
 
 Usage
-=====
-
+-----
 Searches the Chef Server for all hosts that have SSH host keys and
 generates an `/etc/ssh/known_hosts`.
 
-Adding custom host keys
------------------------
 
+### Adding custom host keys
 If you want to add custom host keys for hosts not in your Chef deployment (such
 as github.com, for example), create a data bag called "`ssh_known_hosts`" and add
 an item for each host to it that looks like this:
@@ -37,12 +34,12 @@ You can also specify the following optional values in the data bag:
 * hostname : Short hostname form of the host without domain name
 * dsa : If the host has a dsa host key, specify it as "dsa" instead of "rsa"
 
-License and Author
-==================
+License and Authors
+--------------------
+- Author:: Scott M. Likens (<scott@likens.us>)
+- Author:: Seth Vargo (<sethvargo@gmail.com>)
 
-Author:: Scott M. Likens (<scott@likens.us>)
-
-Copyright:: 2009, Opscode, Inc
+Copyright:: 2013, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
