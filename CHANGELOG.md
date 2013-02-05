@@ -1,3 +1,7 @@
+## v0.7.0:
+
+* [COOK-2320] - Merge `known_host` LWRP into `ssh_known_hosts`
+
 ## v0.6.0:
 
 * [COOK-2268] - Allow to run with chef-solo
