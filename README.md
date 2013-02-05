@@ -16,7 +16,9 @@ Requirements
 Usage
 -----
 ### LWRP
-This LWRP is pretty freakin' simple:
+
+Use the LWRP `ssh_known_hosts_entry` to append an entry for the
+specified host in `/etc/ssh/ssh_known_hosts`. For example:
 
 ```ruby
 ssh_known_hosts_entry 'github.com'
@@ -134,10 +136,11 @@ There are additional optional values you may use in the data bag:
 
 License and Authors
 --------------------
+
 - Author:: Scott M. Likens (<scott@likens.us>)
 - Author:: Seth Vargo (<sethvargo@gmail.com>)
 
-Copyright:: 2013, Opscode, Inc
+Copyright:: 2011-2013, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
