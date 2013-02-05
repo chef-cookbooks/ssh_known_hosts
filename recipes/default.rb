@@ -24,7 +24,9 @@
 # Gather a list of all nodes, warning if using Chef Solo
 if Chef::Config[:solo]
   Chef::Log.warn 'ssh_known_hosts requires Chef search - Chef Solo does not support search!'
-  hosts = []
+
+  # On Chef Solo, we still want the current node to be in the ssh_known_hosts
+  hosts = [node]
 else
   hosts = search(:node, 'keys_ssh:*').collect do |node|
     {
