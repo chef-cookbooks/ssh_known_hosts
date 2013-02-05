@@ -4,9 +4,10 @@
 #
 # Author:: Scott M. Likens (<scott@likens.us>)
 # Author:: Joshua Timberman (<joshua@opscode.com>)
-
+# Author:: Seth Vargo (<sethvargo@gmail.com>)
+#
 # Copyright 2009, Adapp, Inc.
-# Copyright 2011, Opscode, Inc.
+# Copyright 2011-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,42 +21,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-nodes = []
+# Gather a list of all nodes, warning if using Chef Solo
+if Chef::Config[:solo]
+  Chef::Log.warn 'ssh_known_hosts requires Chef search - Chef Solo does not support search!'
 
-unless Chef::Config[:solo]
-  nodes = search(:node, "keys_ssh:* NOT name:#{node.name}")
-end
-
-nodes << node
-
-begin
-  other_hosts = data_bag('ssh_known_hosts')
-rescue
-  Chef::Log.info("Could not load data bag 'ssh_known_hosts', this is optional, moving on...")
-end
-
-if other_hosts
-  require 'resolv'
-  r = Resolv.new
-  other_hosts.each do |h|
-    host = data_bag_item('ssh_known_hosts', h).to_hash
-    host['ipaddress'] ||= r.getaddress(host['fqdn'])
-    host['keys'] = {
-      'ssh' => {}
+  # On Chef Solo, we still want the current node to be in the ssh_known_hosts
+  hosts = [node]
+else
+  hosts = search(:node, 'keys_ssh:*').collect do |node|
+    {
+      'fqdn' => node['fqdn'] || node['ipaddress'] || node['hostname'],
+      'key'  => node['keys']['ssh']['host_rsa_public'] || node['keys']['ssh']['host_dsa_public']
     }
-    host['keys']['ssh']['host_rsa_public'] = host['rsa'] if host.has_key?('rsa')
-    host['keys']['ssh']['host_dsa_public'] = host['dsa'] if host.has_key?('dsa')
-    nodes << host
   end
 end
 
-template "/etc/ssh/ssh_known_hosts" do
-  source "known_hosts.erb"
-  mode 0444
-  owner "root"
-  group platform?("freebsd") ? "wheel" : "root"
-  backup false
-  variables(
-    :nodes => nodes
-  )
+# Add the data from the data_bag to the list of nodes.
+# We need to rescue in case the data_bag doesn't exist.
+begin
+  hosts += data_bag('ssh_known_hosts').collect do |entry|
+    {
+      'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
+      'key'  => entry['rsa'] || entry['dsa']
+    }
+  end
+rescue
+  Chef::Log.info "Could not load data bag 'ssh_known_hosts'"
+end
+
+# Loop over the hosts and add 'em
+hosts.each do |host|
+  unless host['key'].nil?
+    # The key was specified, so use it
+    ssh_known_host_entry host['fqdn'] do
+      key host['key']
+    end
+  else
+    # No key specified, so have known_host perform a DNS lookup
+    ssh_known_host_entry host['fqdn']
+  end
 end
