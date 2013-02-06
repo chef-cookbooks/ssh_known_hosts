@@ -41,4 +41,5 @@ action :create do
       file.write_file
     end
   end
+  new_resource.updated_by_last_action(true)
 end
