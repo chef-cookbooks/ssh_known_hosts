@@ -1,3 +1,7 @@
+## v0.7.2:
+
+* [COOK-2364] - Wrong LWRP name used in recipe
+
 ## v0.7.0:
 
 * [COOK-2320] - Merge `known_host` LWRP into `ssh_known_hosts`
