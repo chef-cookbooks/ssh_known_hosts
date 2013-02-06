@@ -53,11 +53,11 @@ end
 hosts.each do |host|
   unless host['key'].nil?
     # The key was specified, so use it
-    ssh_known_host_entry host['fqdn'] do
+    ssh_known_hosts_entry host['fqdn'] do
       key host['key']
     end
   else
     # No key specified, so have known_host perform a DNS lookup
-    ssh_known_host_entry host['fqdn']
+    ssh_known_hosts_entry host['fqdn']
   end
 end
