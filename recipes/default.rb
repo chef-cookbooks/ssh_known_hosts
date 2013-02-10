@@ -40,9 +40,10 @@ end
 # We need to rescue in case the data_bag doesn't exist.
 begin
   hosts += data_bag('ssh_known_hosts').collect do |entry|
+    item = data_bag_item('ssh_known_hosts', entry)
     {
-      'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
-      'key'  => entry['rsa'] || entry['dsa']
+      'fqdn' => item['fqdn'] || item['ipaddress'] || item['hostname'],
+      'key'  => item['rsa'] || item['dsa']
     }
   end
 rescue
