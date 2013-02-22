@@ -39,7 +39,8 @@ end
 # Add the data from the data_bag to the list of nodes.
 # We need to rescue in case the data_bag doesn't exist.
 begin
-  hosts += data_bag('ssh_known_hosts').collect do |entry|
+  hosts += data_bag('ssh_known_hosts').collect do |item|
+    entry = data_bag_item('ssh_known_hosts', item)
     {
       'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
       'key'  => entry['rsa'] || entry['dsa']
