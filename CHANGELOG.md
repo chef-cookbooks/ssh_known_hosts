@@ -1,3 +1,8 @@
+## v0.7.4:
+
+* [COOK-2440] - `ssh_known_hosts` fails to use data bag entries, doesn't
+  grab items
+
 ## v0.7.2:
 
 * [COOK-2364] - Wrong LWRP name used in recipe
