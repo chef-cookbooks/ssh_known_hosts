@@ -28,11 +28,19 @@ if Chef::Config[:solo]
   # On Chef Solo, we still want the current node to be in the ssh_known_hosts
   hosts = [node]
 else
-  hosts = search(:node, 'keys_ssh:*').collect do |host|
-    {
-      'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-      'key'  => host['keys']['ssh']['host_rsa_public'] || host['keys']['ssh']['host_dsa_public']
-    }
+  hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
+                         :keys => {
+                           'hostname' => [ 'hostname' ],
+                           'fqdn'     => [ 'fqdn' ],
+                           'ipaddress' => [ 'ipaddress' ],
+                           'host_rsa_public' => [ 'keys', 'ssh', 'host_rsa_public' ],
+                           'host_dsa_public' => [ 'keys', 'ssh', 'host_dsa_public' ]
+                         }
+                        ).collect do |host|
+                          {
+                            'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
+                            'key' => host['host_rsa_public'] || host['host_dsa_public']
+                          }
   end
 end
 
