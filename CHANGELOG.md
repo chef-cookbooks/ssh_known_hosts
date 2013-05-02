@@ -1,3 +1,17 @@
+## v1.0.0:
+
+This is a major release because it requires a server that supports the
+partial search feature.
+
+* Opscode Hosted Chef
+* Opscode Private Chef
+* Open Source Chef 11
+
+### Improvement
+
+- [COOK-830]: uses an inordinate amount of RAM when running exception
+  handlers
+
 ## v0.7.4:
 
 * [COOK-2440] - `ssh_known_hosts` fails to use data bag entries, doesn't
