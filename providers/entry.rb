@@ -20,6 +20,7 @@
 action :create do
   ssh_host, ssh_port = new_resource.host.split(':')
   key = (new_resource.key || `ssh-keyscan -p #{ssh_port || '22'} -H #{ssh_host} 2>&1`)
+  Chef::Application.fatal! "Could not connect #{new_resource.host}" if key.nil? or key.empty?
   comment = key.split("\n").first
 
   Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/
