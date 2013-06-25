@@ -19,7 +19,7 @@
 
 action :create do
   key = (new_resource.key || `ssh-keyscan -H #{new_resource.host} 2>&1`)
-  comment = key.split("\n").first
+  comment = key.split("\n").first || ""
 
   Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/
 
