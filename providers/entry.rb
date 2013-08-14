@@ -40,6 +40,7 @@ action :create do
       file.insert_line_if_no_match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/, key)
       file.write_file
     end
+    not_if { ::File.open(node['ssh_known_hosts']['file']).lines.any? { |line| line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/) } }
   end
   new_resource.updated_by_last_action(true)
 end
