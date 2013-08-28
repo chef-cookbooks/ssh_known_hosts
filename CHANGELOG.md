@@ -3,6 +3,11 @@ ssh_known_hosts Cookbook CHANGELOG
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
 
+v1.0.2
+------
+### Bug
+- **[COOK-3113](https://tickets.opscode.com/browse/COOK-3113)** - Use empty string when result is `nil`
+
 v1.0.0
 ------
 This is a major release because it requires a server that supports the partial search feature.
