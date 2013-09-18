@@ -20,7 +20,9 @@ actions :create
 default_action :create
 
 attribute :host, :kind_of => String, :name_attribute => true
-attribute :key, :kind_of => String
+attribute :key_rsa, :kind_of => String
+attribute :key_dsa, :kind_of => String
+attribute :host_array, :kind_of => Array
 
 def initialize(*args)
   super

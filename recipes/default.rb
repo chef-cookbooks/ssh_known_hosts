@@ -39,7 +39,10 @@ else
                         ).collect do |host|
                           {
                             'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-                            'key' => host['host_rsa_public'] || host['host_dsa_public']
+                            'ssh_array' => [host['fqdn'], host['ipaddress'], host['hostname']],
+                            'key_rsa' => host['host_rsa_public'],
+                            'key_dsa' => host['host_dsa_public']
+
                           }
   end
 end
@@ -51,7 +54,9 @@ begin
     entry = data_bag_item('ssh_known_hosts', item)
     {
       'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
-      'key'  => entry['rsa'] || entry['dsa']
+      'ssh_array' => [host['fqdn'], host['ipaddress'], host['hostname']],
+      'key_rsa'  => entry['rsa'],
+      'key_dsa' => entry['dsa'] 
     }
   end
 rescue
@@ -60,11 +65,17 @@ end
 
 # Loop over the hosts and add 'em
 hosts.each do |host|
-  unless host['key'].nil?
+  if host['key_rsa']
     # The key was specified, so use it
     ssh_known_hosts_entry host['fqdn'] do
-      key host['key']
+      host_array host['ssh_array']
+      key_rsa host['key_rsa']
     end
+  elsif host['key_dsa']
+    ssh_known_hosts_entry host['fqdn'] do
+      host_array host['ssh_array']
+      key_dsa host['key_dsa']
+    end     
   else
     # No key specified, so have known_host perform a DNS lookup
     ssh_known_hosts_entry host['fqdn']

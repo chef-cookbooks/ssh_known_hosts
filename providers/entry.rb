@@ -1,5 +1,6 @@
 #
 # Author:: Seth Vargo (<sethvargo@gmail.com>)
+# Author:: Zuhaib Siddique (<zuhaib@hipchat.com>)
 # Provider:: entry
 #
 # Copyright 2013, Seth Vargo
@@ -18,7 +19,21 @@
 #
 
 action :create do
-  key = (new_resource.key || `ssh-keyscan -H #{new_resource.host} 2>&1`)
+  if new_resource.host_array
+    new_resource.host_array.reject! { |c| c.nil? }
+    host = new_resource.host_array.join(',')
+  else
+    host = new_resource.host
+  end
+
+  if new_resource.key_rsa
+    key = "#{host} ssh-rsa #{new_resource.key_rsa}"
+  elsif new_resource.key_dsa
+    key = "#{host} ssh-dsa #{new_resource.key_dsa}"
+  else
+    key = `ssh-keyscan -H #{new_resource.host} 2>&1`
+  end
+      
   comment = key.split("\n").first || ""
 
   Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/
