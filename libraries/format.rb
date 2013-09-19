@@ -1,8 +1,6 @@
 #
-# Author:: Seth Vargo (<sethvargo@gmail.com>)
-# Resource:: entry
-#
-# Copyright 2013, Seth Vargo
+# Copyright:: Copyright (c) 2013 Zuhaib Siddique, Atlassian Inc.
+# License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,15 +13,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-actions :create
-default_action :create
-
-attribute :host, :kind_of => String, :name_attribute => true
-attribute :key, :kind_of => String
-attribute :host_array, :kind_of => Array
-
-def initialize(*args)
-  super
-  @action = :create
+module Format
+  def format_key(rsa, dsa)
+    if rsa
+      return "ssh-rsa #{rsa}"
+    elsif dsa
+      return "ssh-dsa #{dsa}"
+    end 
+  end
 end

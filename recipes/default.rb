@@ -21,6 +21,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+class Chef::Recipe
+  include Format
+end
+
 # Gather a list of all nodes, warning if using Chef Solo
 if Chef::Config[:solo]
   Chef::Log.warn 'ssh_known_hosts requires Chef search - Chef Solo does not support search!'
@@ -40,9 +44,7 @@ else
                           {
                             'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
                             'ssh_array' => [host['fqdn'], host['ipaddress'], host['hostname']],
-                            'key_rsa' => host['host_rsa_public'],
-                            'key_dsa' => host['host_dsa_public']
-
+                            'key' => format_key(host['host_rsa_public'], host['host_rsa_public'])
                           }
   end
 end
@@ -55,8 +57,7 @@ begin
     {
       'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
       'ssh_array' => [entry['fqdn'], entry['ipaddress'], entry['hostname']],
-      'key_rsa'  => entry['rsa'],
-      'key_dsa' => entry['dsa'] 
+      'key' => format_key(entry['rsa'], entry['dsa'])
     }
   end
 rescue
@@ -65,17 +66,12 @@ end
 
 # Loop over the hosts and add 'em
 hosts.each do |host|
-  if host['key_rsa']
+  unless host['key'].nil?
     # The key was specified, so use it
     ssh_known_hosts_entry host['fqdn'] do
       host_array host['ssh_array']
-      key_rsa host['key_rsa']
+      key host['key']
     end
-  elsif host['key_dsa']
-    ssh_known_hosts_entry host['fqdn'] do
-      host_array host['ssh_array']
-      key_dsa host['key_dsa']
-    end     
   else
     # No key specified, so have known_host perform a DNS lookup
     ssh_known_hosts_entry host['fqdn']

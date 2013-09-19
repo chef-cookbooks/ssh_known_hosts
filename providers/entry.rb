@@ -26,10 +26,8 @@ action :create do
     host = new_resource.host
   end
 
-  if new_resource.key_rsa
-    key = "#{host} ssh-rsa #{new_resource.key_rsa}"
-  elsif new_resource.key_dsa
-    key = "#{host} ssh-dsa #{new_resource.key_dsa}"
+  if new_resource.key
+    key = "#{host} #{new_resource.key}"
   else
     key = `ssh-keyscan -H #{new_resource.host} 2>&1`
   end
