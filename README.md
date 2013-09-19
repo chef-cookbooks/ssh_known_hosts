@@ -79,6 +79,7 @@ end
       <td>host_array</td>
       <td>(optional) pass an array of fqdn, ip, etc</td>
       <td><tt>['example.com','192.168.0.1','example']</tt></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
