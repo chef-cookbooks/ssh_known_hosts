@@ -67,13 +67,18 @@ end
       <td>key_rsa</td>
       <td>(optional) provide your own rsa key</td>
       <td><tt>ABAAC3...</tt></td>
+      <td><tt>ssh-keyscan -H #{host}</tt></td>
+    </tr>
+    <tr>
       <td>key_dsa</td>
       <td>(optional) provide your own dsa key</td>
       <td><tt>ABAAC3...</tt></td>
+      <td><tt>ssh-keyscan -H #{host}</tt></td>
+    </tr>
+    <tr>
       <td>host_array</td>
       <td>(optional) pass an array of fqdn, ip, etc</td>
       <td><tt>['example.com','192.168.0.1','example']</tt></td>
-      <td><tt>ssh-keyscan -H #{host}</tt></td>
     </tr>
   </tbody>
 </table>
