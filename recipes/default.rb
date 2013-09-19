@@ -54,7 +54,7 @@ begin
     entry = data_bag_item('ssh_known_hosts', item)
     {
       'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
-      'ssh_array' => [host['fqdn'], host['ipaddress'], host['hostname']],
+      'ssh_array' => [entry['fqdn'], entry['ipaddress'], entry['hostname']],
       'key_rsa'  => entry['rsa'],
       'key_dsa' => entry['dsa'] 
     }
