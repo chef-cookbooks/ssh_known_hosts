@@ -44,7 +44,7 @@ else
                           {
                             'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
                             'ssh_array' => [host['fqdn'], host['ipaddress'], host['hostname']],
-                            'key' => format_key(host['host_rsa_public'], host['host_rsa_public'])
+                            'key' => format_key(host['host_rsa_public'], host['host_dsa_public'])
                           }
   end
 end
