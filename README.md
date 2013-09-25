@@ -40,7 +40,7 @@ You can optionally specify your own key, if you don't want to use `ssh-keyscan`:
 
 ```ruby
 ssh_known_hosts_entry 'github.com' do
-  key 'node.example.com ssh-rsa ...'
+  key '...'
 end
 ```
 
@@ -66,8 +66,14 @@ end
     <tr>
       <td>key</td>
       <td>(optional) provide your own key</td>
-      <td><tt>ssh-rsa ...</tt></td>
+      <td><tt>ssh-rsa ABAAC3...</tt></td>
       <td><tt>ssh-keyscan -H #{host}</tt></td>
+    </tr>
+    <tr>
+      <td>host_array</td>
+      <td>(optional) pass an array of fqdn, ip, etc</td>
+      <td><tt>['example.com','192.168.0.1','example']</tt></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
@@ -118,7 +124,7 @@ There are additional optional values you may use in the data bag:
     <tr>
       <td>rsa</td>
       <td>the rsa key for this server</td>
-      <td><tt>ssh-rsa AAAAB3...</tt></td>
+      <td><tt>AAAAB3...</tt></td>
       <td></td>
     </tr>
     <tr>
@@ -136,7 +142,7 @@ There are additional optional values you may use in the data bag:
     <tr>
       <td>dsa</td>
       <td>the dsa key for this server</td>
-      <td><tt>ssh-dsa ABAAC3...</tt></td>
+      <td><tt>ABAAC3...</tt></td>
       <td></td>
     </tr>
   </tbody>
@@ -148,6 +154,7 @@ License and Authors
 - Author: Scott M. Likens (<scott@likens.us>)
 - Author: Seth Vargo (<sethvargo@gmail.com>)
 - Author: Lamont Granquist (<lamont@opscode.com>)
+- Author: Zuhaib Siddique (<zuhaib@hipchat.com>)
 
 ```text
 Copyright:: 2011-2013, Opscode, Inc
