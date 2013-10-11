@@ -18,7 +18,16 @@
 #
 
 action :create do
-  key = (new_resource.key || `ssh-keyscan -H #{new_resource.host} 2>&1`)
+  type = []
+  new_resource.type.split(',').each do |t|
+    if %w{ rsa1 rsa dsa }.include? t
+      type << t
+    else
+      Chef::Application.fatal! "ssh-keyscan does not support type \"#{t}\""
+    end
+  end
+
+  key = (new_resource.key || `ssh-keyscan -t #{type.join(',')} -p #{new_resource.port} -H #{new_resource.host} 2>&1`)
   comment = key.split("\n").first || ""
 
   Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/

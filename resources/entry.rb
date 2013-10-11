@@ -21,6 +21,8 @@ default_action :create
 
 attribute :host, :kind_of => String, :name_attribute => true
 attribute :key, :kind_of => String
+attribute :port, :kind_of => Integer, :default => 22
+attribute :type, :kind_of => String, :default => 'rsa'
 
 def initialize(*args)
   super

@@ -3,6 +3,11 @@ ssh_known_hosts Cookbook CHANGELOG
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
 
+v1.1.0
+------
+
+Added port and type parameters to `ssh_known_hosts_entry` LWRP
+
 v1.0.2
 ------
 ### Bug
