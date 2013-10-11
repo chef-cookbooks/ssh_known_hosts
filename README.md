@@ -69,6 +69,18 @@ end
       <td><tt>ssh-rsa ...</tt></td>
       <td><tt>ssh-keyscan -H #{host}</tt></td>
     </tr>
+    <tr>
+      <td>port</td>
+      <td>(optional) specify the port ssh is running on</td>
+      <td><tt>2222</tt></td>
+      <td><tt>22</tt></td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>(optional) specify the type of ssh key to retrieve</td>
+      <td><tt>dsa</tt></td>
+      <td><tt>rsa</tt></td>
+    </tr>
   </tbody>
 </table>
 
