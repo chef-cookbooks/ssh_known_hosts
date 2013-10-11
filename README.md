@@ -69,6 +69,12 @@ end
       <td><tt>ssh-rsa ...</tt></td>
       <td><tt>ssh-keyscan -H #{host}</tt></td>
     </tr>
+    <tr>
+      <td>port</td>
+      <td>(optional) the server port that ssh-keyscan will use to gather the public key</td>
+      <td><tt>2222</tt></td>
+      <td><tt>22</tt></td>
+    </tr>
   </tbody>
 </table>
 
