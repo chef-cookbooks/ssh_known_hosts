@@ -3,6 +3,11 @@ ssh_known_hosts Cookbook CHANGELOG
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
 
+v1.1.0
+------
+[COOK-3765] - support ssh-keyscan using an alternative port number
+
+
 v1.0.2
 ------
 ### Bug
