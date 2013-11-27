@@ -66,7 +66,7 @@ hosts.each do |host|
       key host['key']
     end
   else
-    # No key specified, so have known_host perform a DNS lookup
+    # No key specified, so have ssh_known_hosts_entry perform a DNS lookup
     ssh_known_hosts_entry host['fqdn']
   end
 end
