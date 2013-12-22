@@ -29,7 +29,9 @@ action :create do
 
   unless key_exists?(key, comment)
     converge_by("add #{new_resource.name} to #{node['ssh_known_hosts']['file']}") do
+      prepend_newline = needs_newline?
       ::File.open(node['ssh_known_hosts']['file'], 'a') do |file|
+        file.puts if prepend_newline
         file.puts key
       end
     end
@@ -47,4 +49,9 @@ private
     ::File.readlines(node['ssh_known_hosts']['file']).any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
+  end
+
+  def needs_newline?
+    return false unless key_file_exists?
+    !(::File.readlines(node['ssh_known_hosts']['file'])[-1] =~ /#{Regexp.escape($/)}$/)
   end
