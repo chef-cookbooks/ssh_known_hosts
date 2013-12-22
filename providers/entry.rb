@@ -17,29 +17,34 @@
 # limitations under the License.
 #
 
+def whyrun_supported?
+  true
+end
+
 action :create do
   key = (new_resource.key || `ssh-keyscan -H -p #{new_resource.port} #{new_resource.host} 2>&1`)
   comment = key.split("\n").first || ""
 
   Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/
 
-  # Ensure that the file exists and has minimal content (required by Chef::Util::FileEdit)
-  file node['ssh_known_hosts']['file'] do
-    action        :create
-    backup        false
-    content       '# This file must contain at least one line. This is that line.'
-    only_if do
-      !::File.exists?(node['ssh_known_hosts']['file']) || ::File.new(node['ssh_known_hosts']['file']).readlines.length == 0
+  unless key_exists?(key, comment)
+    converge_by("add #{new_resource.name} to #{node['ssh_known_hosts']['file']}") do
+      ::File.open(node['ssh_known_hosts']['file'], 'a') do |file|
+        file.puts key
+      end
     end
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+private
+  def key_file_exists?
+    ::File.exists?(node['ssh_known_hosts']['file'])
   end
 
-  # Use a Ruby block to edit the file
-  ruby_block "add #{new_resource.host} to #{node['ssh_known_hosts']['file']}" do
-    block do
-      file = ::Chef::Util::FileEdit.new(node['ssh_known_hosts']['file'])
-      file.insert_line_if_no_match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/, key)
-      file.write_file
+  def key_exists?(key, comment)
+    return false unless key_file_exists?
+    ::File.readlines(node['ssh_known_hosts']['file']).any? do |line|
+      line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
   end
-  new_resource.updated_by_last_action(true)
-end
