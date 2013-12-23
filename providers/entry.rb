@@ -35,7 +35,6 @@ action :create do
         file.puts key
       end
     end
-    new_resource.updated_by_last_action(true)
   end
 end
 
