@@ -7,4 +7,4 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version           '1.1.1'
 recipe            'ssh_known_hosts', 'Provides an LWRP for managing SSH known hosts. Also includes a recipe for automatically adding all nodes to the SSH known hosts.'
 
-depends "partial_search"
+recommends "partial_search"
