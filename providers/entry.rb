@@ -17,29 +17,50 @@
 # limitations under the License.
 #
 
+use_inline_resources if defined?(use_inline_resources)
+
+def whyrun_supported?
+  true
+end
+
 action :create do
   key = (new_resource.key || `ssh-keyscan -H -p #{new_resource.port} #{new_resource.host} 2>&1`)
   comment = key.split("\n").first || ""
 
   Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/
 
-  # Ensure that the file exists and has minimal content (required by Chef::Util::FileEdit)
-  file node['ssh_known_hosts']['file'] do
-    action        :create
-    backup        false
-    content       '# This file must contain at least one line. This is that line.'
-    only_if do
-      !::File.exists?(node['ssh_known_hosts']['file']) || ::File.new(node['ssh_known_hosts']['file']).readlines.length == 0
+  if key_exists?(key, comment)
+    Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
+  else
+    new_keys = (keys + [key]).uniq.sort
+    file "ssh_known_hosts-#{new_resource.name}" do
+      path node['ssh_known_hosts']['file']
+      action :create
+      backup false
+      content "#{new_keys.join($/)}#{$/}"
     end
+  end
+end
+
+private
+  def keys
+    unless @keys
+      if key_file_exists?
+        lines = ::File.readlines(node['ssh_known_hosts']['file'])
+        @keys = lines.map {|line| line.chomp}.reject {|line| line.empty?}
+      else
+        @keys = []
+      end
+    end
+    @keys
   end
 
-  # Use a Ruby block to edit the file
-  ruby_block "add #{new_resource.host} to #{node['ssh_known_hosts']['file']}" do
-    block do
-      file = ::Chef::Util::FileEdit.new(node['ssh_known_hosts']['file'])
-      file.insert_line_if_no_match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/, key)
-      file.write_file
+  def key_file_exists?
+    ::File.exists?(node['ssh_known_hosts']['file'])
+  end
+
+  def key_exists?(key, comment)
+    keys.any? do |line|
+      line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
   end
-  new_resource.updated_by_last_action(true)
-end
