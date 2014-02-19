@@ -3,6 +3,12 @@ ssh_known_hosts Cookbook CHANGELOG
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
 
+v1.2.0 (2014-02-18)
+-------------------
+### Bug
+- **[COOK-3453](https://tickets.opscode.com/browse/COOK-3453)** - ssh_known_hosts cookbook ruby block executes on every chef run
+
+
 v1.1.0
 ------
 [COOK-3765] - support ssh-keyscan using an alternative port number
