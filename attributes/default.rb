@@ -18,3 +18,4 @@
 #
 
 default['ssh_known_hosts']['file'] = '/etc/ssh/ssh_known_hosts'
+default['ssh_known_hosts']['known_hosts'] = []
