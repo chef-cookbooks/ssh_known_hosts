@@ -58,6 +58,14 @@ rescue
   Chef::Log.info "Could not load data bag 'ssh_known_hosts'"
 end
 
+# Add data from attributes to the list of nodes.
+hosts += node[:ssh_known_hosts][:known_hosts].map do |known_host|
+  {
+    'fqdn' => known_host['fqdn'] || known_host['ipaddress'] || known_host['hostname'],
+    'key'  => known_host['rsa'] || known_host['dsa']
+  }
+end
+
 # Loop over the hosts and add 'em
 hosts.each do |host|
   unless host['key'].nil?

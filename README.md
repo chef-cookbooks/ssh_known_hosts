@@ -86,7 +86,7 @@ Searches the Chef Server for all hosts that have SSH host keys and generates an 
 
 #### Adding custom host keys
 
-There are two ways to add custom host keys. You can either use the provided LWRP (see above), or by creating a data bag called "`ssh_known_hosts`" and adding an item for each host:
+There are three ways to add custom host keys. You can either use the provided LWRP (see above), or by creating a data bag called "`ssh_known_hosts`" and adding an item for each host:
 
 ```javascript
 {
@@ -96,7 +96,16 @@ There are two ways to add custom host keys. You can either use the provided LWRP
 }
 ```
 
-There are additional optional values you may use in the data bag:
+Alternatively, you can add known hosts to attributes in the `node[:ssh_known_hosts][:known_hosts]` array as:
+
+```javascript
+{
+  "fqdn": "github.com",
+  "rsa": "github-rsa-host-key"
+}
+```
+
+There are additional optional values you may use in the data bag and attribute methods:
 
 <table>
   <thead>
@@ -111,7 +120,7 @@ There are additional optional values you may use in the data bag:
   <tbody>
     <tr>
       <td>id</td>
-      <td>a unique id for this data bag entry</td>
+      <td>a unique id for this data bag entry (data bag method only)</td>
       <td><tt>github</tt></td>
       <td></td>
     </tr>
@@ -154,6 +163,7 @@ License and Authors
 - Author: Scott M. Likens (<scott@likens.us>)
 - Author: Seth Vargo (<sethvargo@gmail.com>)
 - Author: Lamont Granquist (<lamont@opscode.com>)
+- Author: Andy Rossmeissl (<andy@rossmeissl.net>)
 
 ```text
 Copyright:: 2011-2013, Opscode, Inc
