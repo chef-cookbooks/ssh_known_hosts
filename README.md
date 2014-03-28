@@ -163,7 +163,6 @@ License and Authors
 - Author: Scott M. Likens (<scott@likens.us>)
 - Author: Seth Vargo (<sethvargo@gmail.com>)
 - Author: Lamont Granquist (<lamont@opscode.com>)
-- Author: Andy Rossmeissl (<andy@rossmeissl.net>)
 
 ```text
 Copyright:: 2011-2013, Opscode, Inc
