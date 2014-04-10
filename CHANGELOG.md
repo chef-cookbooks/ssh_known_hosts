@@ -3,6 +3,11 @@ ssh_known_hosts Cookbook CHANGELOG
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
 
+v1.3.0 (2014-04-09)
+-------------------
+- [COOK-4489] Updated ssh-keyscan to include -t type
+
+
 v1.2.0 (2014-02-18)
 -------------------
 ### Bug
