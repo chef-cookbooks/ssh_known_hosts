@@ -2,7 +2,7 @@ ssh_known_hosts Cookbook
 ========================
 The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh_known_hosts` file.
 
-- The default recipe builds `/etc/ssh/known_hosts` based on search indexes and ohai data.
+- The default recipe builds `/etc/ssh/ssh_known_hosts` based on search indexes using `rsa,dsa` key types and ohai data.
 - The LWRP provides a way to add custom entries in your own recipes.
 
 You can also optionally put other host keys in a data bag called "`ssh_known_hosts`". See below for details.
@@ -44,6 +44,17 @@ ssh_known_hosts_entry 'github.com' do
 end
 ```
 
+#### Attributes
+
+The following attributes are set on a per-platform basis, see the `attributes/default.rb`.
+
+* `node['ssh_known_hosts']['file']` - Sets up the location of the ssh_known_hosts file for the system. 
+  Defaults to '/etc/ssh/ssh_known_hosts'
+* `node['ssh_known_hosts']['key_type']` - Determines which key type ssh-keyscan will use to determine the 
+  host key, different systems will have different available key types, check your manpage for available 
+  key types for ssh-keyscan. Defaults to 'rsa,dsa'
+
+
 #### LWRP Attributes
 
 <table>
@@ -82,7 +93,7 @@ end
 
 ### Default Recipe
 
-Searches the Chef Server for all hosts that have SSH host keys and generates an `/etc/ssh/ssh_known_hosts`.
+Searches the Chef Server for all hosts that have SSH host keys using `rsa,dsa` key types and generates an `/etc/ssh/ssh_known_hosts`.
 
 #### Adding custom host keys
 
