@@ -159,6 +159,17 @@ There are additional optional values you may use in the data bag:
   </tbody>
 </table>
 
+###ChefSpec matchers
+
+A custom matcher is available for you to use in recipe tests.
+
+``` 
+describe 'my_cookbook::my_recipe' do
+	let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+	it { expect(chef_run).to append_to_ssh_known_hosts 'github.com' }
+end
+```
+
 
 License and Authors
 -------------------
