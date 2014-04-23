@@ -24,10 +24,8 @@ def whyrun_supported?
 end
 
 action :create do
-  key = (new_resource.key || `ssh-keyscan -H -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host} 2>&1`)
+  key = (new_resource.key || `ssh-keyscan -H -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`)
   comment = key.split("\n").first || ""
-
-  Chef::Application.fatal! "Could not resolve #{new_resource.host}" if key =~ /getaddrinfo/
 
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
