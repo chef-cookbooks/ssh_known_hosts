@@ -1,6 +1,6 @@
 ssh_known_hosts Cookbook
 ========================
-The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh_known_hosts` file.
+The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file.
 
 - The default recipe builds `/etc/ssh/ssh_known_hosts` based on search indexes using `rsa,dsa` key types and ohai data.
 - The LWRP provides a way to add custom entries in your own recipes.
