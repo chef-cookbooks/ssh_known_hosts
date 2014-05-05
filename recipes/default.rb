@@ -27,8 +27,13 @@ if Chef::Config[:solo]
 
   # On Chef Solo, we still want the current node to be in the ssh_known_hosts
   hosts = [node]
-else
-  hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
+elsif node['ssh_known_hosts']['find_hosts']
+  if node['ssh_known_hosts']['multi_environment']
+    env_search="chef_environment:*"
+  else
+    env_search="chef_environment:#{node.chef_environment}"
+  end
+  hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name} AND #{env_search}",
                          :keys => {
                            'hostname' => [ 'hostname' ],
                            'fqdn'     => [ 'fqdn' ],
@@ -42,6 +47,8 @@ else
                             'key' => host['host_rsa_public'] || host['host_dsa_public']
                           }
   end
+else
+  hosts = Array.new
 end
 
 # Add the data from the data_bag to the list of nodes.
