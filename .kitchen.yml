@@ -2,6 +2,8 @@
 driver_plugin: vagrant
 driver_config:
   require_chef_omnibus: true
+provisioner:
+  name: chef_zero
 
 platforms:
 - name: ubuntu-12.04
@@ -28,4 +30,8 @@ suites:
 - name: default
   run_list:
   - recipe[ssh_known_hosts]
+  attributes: {}
+- name: cacher
+  run_list:
+  - recipe[ssh_known_hosts::cacher]
   attributes: {}
