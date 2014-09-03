@@ -6,10 +6,8 @@
     "ipaddress": "10.0.2.17",
     "keys": {
       "ssh": {
-        "host_rsa_public": "AAAAB3NzaC1yc2AAAAADAQABAAABAQDgcdpHxpiDrPWbTxft814MQhchd+/9pNZXZwDW1PzolYD2tU3v8iZpQsMCeY4Hj8ywaj5jtBUGJUTAs9PdLJDgyCcJ5Ew2UhRPNV0acPQuwHQIe6EhhkrZibEOTCi20XzZKVGzbowSWB9ipc4ARXGnh0z3DpvnZztHfUIrL/fMqCYjmVgtkj7dxcGwAe4GyiaspommxM5tbwzEUA6rou/715lWNQFhEc025vMZZzZ4JnMb+Glm8FMwxGjvRpnwZKj5d4Kter/VIBx+4Xe++QNgnfTJA3b0MV4RRXiknLLNjQokTpm6SDq0aHx3yytDzLgu++YtcB4uou8WaX36n4BD",
-        "host_dsa_public": "AAAAB3NzaC1kc3MAAACBAIVeSGoVnp+MptM790xCfZ8/jSalyD4nth/4xVZj8Mn39QBBaGBfG9Mxil+KH38G2kQ5Sz3+ox+d9A7gKUKs2oeOiATgbKGbIn42Z2q99F8WPmEnKZnsdqjjibRXxEq6m5LjH0EQ/VJ+LYNcFVy5Wq1xx9psTtSvJZQH7yOCVNtrAAAAFQC4aaFo1ra3q77D+P/VKKJoLPcL8QAAAIBQBl5kxmAFawMF7cRCk6PiUv87h+jBHp2ULxlOXdgp6OlUa1mLyALWTt84oNVvgE9Y9TPr6dYixtDyyagsVseET4g8UV2PSMy5QB3J/KXrkDMpO8nqU+wU24VPY6QRRBBMDPGXlfqIV4a2f4yJEdINJpiO3VRgIDYDfI2zlFTh4wAAAIBAAWlO3GBOoz836HchHVhBGwapQj9EL+rQ6f3zuw6oQZkEf0tFaO6Uch10EuhAROAJT24EK9ga09q0zil+iW2KSFttpiEbR+Igo6jIYyz/JyK1BGydy/iNgrQndlqZOSgku1NYvHy7E1afoJLWw4n+lO2A9rD1NAQmgsrscPueeg==",
-        "host_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNr4nAU2evNbE8VOSoGHwhUpIaJPaE6o0ROT0OuiM59rGZnZugTCdLp9oCCz0F7sKGGt5Q0LDFGh8Xz64mOpSpA=",
-        "host_ecdsa_type": "ecdsa-sha2-nistp256"
+        "host_rsa_public": "TEST_RSA_PUBLIC_KEY_HOST-2",
+        "host_dsa_public": "TEST_DSA_PUBLIC_KEY_HOST-2"
       }
     }
   }
