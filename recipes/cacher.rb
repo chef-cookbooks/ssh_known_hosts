@@ -4,7 +4,7 @@ if Chef::Config[:solo]
     'not support search!'
 else
   all_host_keys = partial_search(
-    :node, 'keys_ssh:*',
+    :node, 'keys:*',
     :keys => {
       'hostname'        => [ 'hostname' ],
       'fqdn'            => [ 'fqdn' ],
