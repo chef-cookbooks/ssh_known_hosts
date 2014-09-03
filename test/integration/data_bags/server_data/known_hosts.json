@@ -1,0 +1,21 @@
+{
+  "id": "known_hosts",
+  "keys": [
+    {
+      "fqdn": "cacher-ubuntu-1204.vagrantup.com",
+      "key": "AAAAB3NzaC1yc2EAAAADAQABAAABAQCtZX4CK1iq8+b9Lz/rEzHU+R5Z8tEQ7xSye1ZFEHvRjt9vTPUfDIU03rCHZnq89A1GYlAt2iCGQU/wuUzYW8OIpZp04pjxaml+nsiggzfTbcw4DMLW0Be03507/J25PTXlIRIQDg1HmH0ArdAfW3Rqu6E1FeYHhSFmJcILdXr8bZrJFpQaukFxMFp0LonXm8jbyb4uxXZjKbQXviroy2NAc9Wr78CeXKaTrv5aSRpkEu3M30cGP8WDhJn7piO4adCkWeESf2aJgl15plZoCcTP7U4OvoE4T2t3giO0qmCi7/WUVuoEGQh6+gHFN3bLppO1OQS6JHIQiK7RMoqpgY+z"
+    },
+    {
+      "fqdn": "host-1.vagrantup.com",
+      "key": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDgcdpHxpiDrPWbTxft814MQhchd+/9pNZXZwDW1PzolYD2tU3v8iZpQsMCeY4Hj8ywaj5jtBUGJUTAs9PdLJDgyCcJ5Ew2UhRPNV0acPQuwHQIe6EhhkrZibEOTCi20XzZKVGzbowSWB9ipc4ARXGnh0z3DpvnZztHfUIrL/fMqCYjmVgtkj7dxcGwAe4GyiaspommxM5tbwzEUA6rou/715lWNQFhEc025vMZZzZ4JnMb+Glm8FMwxGjvRpnwZKj5d4Kter/VIBx+4Xe++QNgnfTJA3b0MV4RRXiknLLNjQokTpm6SDq0aHx3yytDzLgu++YtcB4uou8WaX36n4BD"
+    },
+    {
+      "fqdn": "host-2.vagrantup.com",
+      "key": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDgcdpHxpiDrPWbTxft814MQhchd+/9pNZXZwDW1PzolYD2tU3v8iZpQsMCeY4Hj8ywaj5jtBUGJUTAs9PdLJDgyCcJ5Ew2UhRPNV0acPQuwHQIe6EhhkrZibEOTCi20XzZKVGzbowSWB9ipc4ARXGnh0z3DpvnZztHfUIrL/fMqCYjmVgtkj7dxcGwAe4GyiaspommxM5tbwzEUA6rou/715lWNQFhEc025vMZZzZ4JnMb+Glm8FMwxGjvRpnwZKj5d4Kter/VIBx+4Xe++QNgnfTJA3b0MV4RRXiknLLNjQokTpm6SDq0aHx3yytDzLgu++YtcB4uou8WaX36n4BD"
+    },
+    {
+      "fqdn": "host-3.vagrantup.com",
+      "key": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDgcdpHxpiDrPWbTxft814MQhchd+/9pNZXZwDW1PzolYD2tU3v8iZpQsMCeY4Hj8ywaj5jtBUGJUTAs9PdLJDgyCcJ5Ew2UhRPNV0acPQuwHQIe6EhhkrZibEOTCi20XzZKVGzbowSWB9ipc4ARXGnh0z3DpvnZztHfUIrL/fMqCYjmVgtkj7dxcGwAe4GyiaspommxM5tbwzEUA6rou/715lWNQFhEc025vMZZzZ4JnMb+Glm8FMwxGjvRpnwZKj5d4Kter/VIBx+4Xe++QNgnfTJA3b0MV4RRXiknLLNjQokTpm6SDq0aHx3yytDzLgu++YtcB4uou8WaX36n4BD"
+    }
+  ]
+}
