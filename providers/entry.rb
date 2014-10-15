@@ -25,18 +25,30 @@ end
 
 action :create do
   key = (new_resource.key || `ssh-keyscan -H -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`)
-  comment = key.split("\n").first || ""
-
+  comment, line, _ = key.split("\n")
+  key = Key.new(line)
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
   else
-    new_keys = (keys + [key]).uniq.sort
+    new_keys = (keys + [key.to_s]).uniq.sort
     file "ssh_known_hosts-#{new_resource.name}" do
       path node['ssh_known_hosts']['file']
       action :create
       backup false
       content "#{new_keys.join($/)}#{$/}"
     end
+  end
+end
+
+class Key
+  attr_reader :finger_print
+
+  def initialize(line)
+    @host, @finger_print = line.split('= ')
+  end
+
+  def to_s
+    "#{@host}= #{@finger_print}"
   end
 end
 
@@ -59,6 +71,6 @@ private
 
   def key_exists?(key, comment)
     keys.any? do |line|
-      line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
+      line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key.finger_print)}/)
     end
   end
