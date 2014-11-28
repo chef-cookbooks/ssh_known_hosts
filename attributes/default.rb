@@ -19,3 +19,5 @@
 
 default['ssh_known_hosts']['file'] = '/etc/ssh/ssh_known_hosts'
 default['ssh_known_hosts']['key_type'] = 'rsa,dsa'
+default['ssh_known_hosts']['multi_environment'] = false
+default['ssh_known_hosts']['find_hosts'] = true
