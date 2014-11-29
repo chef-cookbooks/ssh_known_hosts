@@ -1,0 +1,17 @@
+{
+  "id": "known_hosts",
+  "keys": [
+    {
+      "fqdn": "host-1.vagrantup.com",
+      "key": "TEST_RSA_PUBLIC_KEY_HOST-1"
+    },
+    {
+      "fqdn": "host-2.vagrantup.com",
+      "key": "TEST_RSA_PUBLIC_KEY_HOST-2"
+    },
+    {
+      "fqdn": "host-3.vagrantup.com",
+      "key": "TEST_RSA_PUBLIC_KEY_HOST-3"
+    }
+  ]
+}

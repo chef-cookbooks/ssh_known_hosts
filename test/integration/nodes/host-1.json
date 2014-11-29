@@ -1,0 +1,15 @@
+{
+  "name": "host-1",
+  "chef_environment": "stage",
+  "automatic": {
+    "hostname": "host-1",
+    "fqdn": "host-1.vagrantup.com",
+    "ipaddress": "10.0.2.16",
+    "keys": {
+      "ssh": {
+        "host_rsa_public": "TEST_RSA_PUBLIC_KEY_HOST-1",
+        "host_dsa_public": "TEST_DSA_PUBLIC_KEY_HOST-1"
+      }
+    }
+  }
+}
