@@ -61,4 +61,5 @@ private
     keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
+    not_if { ::File.open(node['ssh_known_hosts']['file']).lines.any? { |line| line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/) } }
   end
