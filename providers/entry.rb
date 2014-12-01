@@ -24,7 +24,7 @@ def whyrun_supported?
 end
 
 action :create do
-  key = (new_resource.key || `ssh-keyscan -H -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`)
+  key = (new_resource.key || `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`)
   comment = key.split("\n").first || ""
 
   if key_exists?(key, comment)
