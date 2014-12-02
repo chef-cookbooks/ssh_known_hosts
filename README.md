@@ -1,6 +1,6 @@
 ssh_known_hosts Cookbook
 ========================
-The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh_known_hosts` file.
+The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file.
 
 - The default recipe builds `/etc/ssh/ssh_known_hosts` based either on search indexes using `rsa,dsa` key types and ohai data **or**, when `['ssh_known_hosts']['use_data_bag_cache']` is `true`, on the contents of a data bag that is maintained by the `cacher` recipe running on a worker node.
 - The cacher recipe builds and maintains a data bag based on search indexes using `rsa,dsa` key types and ohai data.
