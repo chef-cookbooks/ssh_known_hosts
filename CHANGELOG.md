@@ -22,7 +22,7 @@ v1.3.0 (2014-04-09)
 v1.2.0 (2014-02-18)
 -------------------
 ### Bug
-- **[COOK-3453](https://tickets.opscode.com/browse/COOK-3453)** - ssh_known_hosts cookbook ruby block executes on every chef run
+- **[COOK-3453](https://tickets.chef.io/browse/COOK-3453)** - ssh_known_hosts cookbook ruby block executes on every chef run
 
 
 v1.1.0
@@ -33,14 +33,14 @@ v1.1.0
 v1.0.2
 ------
 ### Bug
-- **[COOK-3113](https://tickets.opscode.com/browse/COOK-3113)** - Use empty string when result is `nil`
+- **[COOK-3113](https://tickets.chef.io/browse/COOK-3113)** - Use empty string when result is `nil`
 
 v1.0.0
 ------
 This is a major release because it requires a server that supports the partial search feature.
 
-- Opscode Hosted Chef
-- Opscode Private Chef
+- Chef Software Hosted Chef
+- Chef Software Private Chef
 - Open Source Chef 11
 
 ### Improvement

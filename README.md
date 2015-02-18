@@ -13,10 +13,10 @@ Requirements
 ------------
 Should work on any operating system that supports `/etc/ssh/ssh_known_hosts`.
 
-The Opscode `partial_search` cookbook is required for the default recipe, as well as a Chef Server that supports partial search:
+The Chef Software `partial_search` cookbook is required for the default recipe, as well as a Chef Server that supports partial search:
 
-- Opscode Hosted Chef
-- Opscode Private Chef
+- Chef Software Hosted Chef
+- Chef Software Private Chef
 - Open Source Chef Server 11
 
 
@@ -183,10 +183,10 @@ License and Authors
 -------------------
 - Author: Scott M. Likens (<scott@likens.us>)
 - Author: Seth Vargo (<sethvargo@gmail.com>)
-- Author: Lamont Granquist (<lamont@opscode.com>)
+- Author: Lamont Granquist (<lamont@chef.io>)
 
 ```text
-Copyright:: 2011-2013, Opscode, Inc
+Copyright:: 2011-2013, Chef Software, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
