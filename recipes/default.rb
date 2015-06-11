@@ -82,6 +82,6 @@ hosts.each do |host|
     end
   else
     # No key specified, so have known_host perform a DNS lookup
-    ssh_known_hosts_entry host['fqdn']
+    ssh_known_hosts_entry host['fqdn'] unless host['fqdn'].nil?
   end
 end
