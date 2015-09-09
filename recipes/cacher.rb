@@ -5,12 +5,12 @@ if Chef::Config[:solo]
 else
   all_host_keys = partial_search(
     :node, 'keys:*',
-    :keys => {
-      'hostname'        => [ 'hostname' ],
-      'fqdn'            => [ 'fqdn' ],
-      'ipaddress'       => [ 'ipaddress' ],
-      'host_rsa_public' => [ 'keys', 'ssh', 'host_rsa_public' ],
-      'host_dsa_public' => [ 'keys', 'ssh', 'host_dsa_public' ]
+    keys: {
+      'hostname'        => ['hostname'],
+      'fqdn'            => ['fqdn'],
+      'ipaddress'       => ['ipaddress'],
+      'host_rsa_public' => %w(keys ssh host_rsa_public),
+      'host_dsa_public' => %w(keys ssh host_dsa_public)
     }
   ).collect do |host|
     {
@@ -22,8 +22,8 @@ else
 end
 
 new_data_bag_content = {
-  "id" => node['ssh_known_hosts']['cacher']['data_bag_item'],
-  "keys" => all_host_keys
+  'id' => node['ssh_known_hosts']['cacher']['data_bag_item'],
+  'keys' => all_host_keys
 }
 
 Chef::Log.debug('New data bag content: ' \
@@ -48,7 +48,7 @@ else
 end
 
 unless (defined? existing_data_bag_content) &&
-  new_data_bag_content == existing_data_bag_content
+       new_data_bag_content == existing_data_bag_content
 
   Chef::Log.debug('Data bag contents differ.  Saving updates.')
 

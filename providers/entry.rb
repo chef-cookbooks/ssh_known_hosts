@@ -24,7 +24,6 @@ def whyrun_supported?
 end
 
 action :create do
-
   if new_resource.key
 
     if new_resource.key_type == 'rsa' || new_resource.key_type == 'dsa'
@@ -34,12 +33,12 @@ action :create do
     end
 
     key = "#{new_resource.host} #{key_type} #{new_resource.key}"
-    
+
   else
 
     key = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
   end
-    comment = key.split("\n").first || ""
+  comment = key.split("\n").first || ''
 
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
@@ -49,30 +48,31 @@ action :create do
       path node['ssh_known_hosts']['file']
       action :create
       backup false
-      content "#{new_keys.join($/)}#{$/}"
+      content "#{new_keys.join($INPUT_RECORD_SEPARATOR)}#{$INPUT_RECORD_SEPARATOR}"
     end
   end
 end
 
 private
-  def keys
-    unless @keys
-      if key_file_exists?
-        lines = ::File.readlines(node['ssh_known_hosts']['file'])
-        @keys = lines.map {|line| line.chomp}.reject {|line| line.empty?}
-      else
-        @keys = []
-      end
-    end
-    @keys
-  end
 
-  def key_file_exists?
-    ::File.exists?(node['ssh_known_hosts']['file'])
-  end
-
-  def key_exists?(key, comment)
-    keys.any? do |line|
-      line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
+def keys
+  unless @keys
+    if key_file_exists?
+      lines = ::File.readlines(node['ssh_known_hosts']['file'])
+      @keys = lines.map(&:chomp).reject(&:empty?)
+    else
+      @keys = []
     end
   end
+  @keys
+end
+
+def key_file_exists?
+  ::File.exist?(node['ssh_known_hosts']['file'])
+end
+
+def key_exists?(key, comment)
+  keys.any? do |line|
+    line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
+  end
+end

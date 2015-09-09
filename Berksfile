@@ -1,4 +1,4 @@
-source 'https://supermarket.chef.io' 
+source 'https://supermarket.chef.io'
 
 metadata
 
@@ -7,5 +7,5 @@ group :unit do
 end
 
 group :integration do
-  cookbook "minitest-handler"
+  cookbook 'minitest-handler'
 end

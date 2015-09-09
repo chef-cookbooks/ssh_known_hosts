@@ -26,7 +26,7 @@ if node['ssh_known_hosts']['use_data_bag_cache']
   unless Chef::DataBag.list.key?(node['ssh_known_hosts']['cacher']['data_bag'])
     fail 'use_data_bag_cache is set but the configured data bag was not found'
   end
-  
+
   hosts = data_bag_item(
     node['ssh_known_hosts']['cacher']['data_bag'],
     node['ssh_known_hosts']['cacher']['data_bag_item']
@@ -41,18 +41,18 @@ else
     hosts = [node]
   else
     hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
-                           :keys => {
-                             'hostname' => [ 'hostname' ],
-                             'fqdn'     => [ 'fqdn' ],
-                             'ipaddress' => [ 'ipaddress' ],
-                             'host_rsa_public' => [ 'keys', 'ssh', 'host_rsa_public' ],
-                             'host_dsa_public' => [ 'keys', 'ssh', 'host_dsa_public' ]
+                           keys: {
+                             'hostname' => ['hostname'],
+                             'fqdn'     => ['fqdn'],
+                             'ipaddress' => ['ipaddress'],
+                             'host_rsa_public' => %w(keys ssh host_rsa_public),
+                             'host_dsa_public' => %w(keys ssh host_dsa_public)
                            }
                           ).collect do |host|
-                            {
-                              'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-                              'key' => host['host_rsa_public'] || host['host_dsa_public']
-                            }
+      {
+        'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
+        'key' => host['host_rsa_public'] || host['host_dsa_public']
+      }
     end
   end
 end
