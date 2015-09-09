@@ -1,3 +1,7 @@
+ssh_known_hosts CHANGELOG
+===================
+This file is used to list changes made in each version of the ssh_known_hosts cookbook.
+
 v2.0.0 (2014-12-02)
 -------------------
 - [#36] Fix the way keys are rendered
