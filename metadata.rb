@@ -8,3 +8,6 @@ version           '2.0.0'
 recipe            'ssh_known_hosts', 'Provides an LWRP for managing SSH known hosts. Also includes a recipe for automatically adding all nodes to the SSH known hosts.'
 
 depends "partial_search"
+
+source_url 'https://github.com/chef-cookbooks/ssh_known_hosts' if respond_to?(:source_url)
+issues_url 'https://github.com/chef-cookbooks/motd-tail/ssh_known_hosts' if respond_to?(:issues_url)
