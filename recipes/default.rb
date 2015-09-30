@@ -7,7 +7,7 @@
 # Author:: Seth Vargo (<sethvargo@gmail.com>)
 #
 # Copyright 2009, Adapp, Inc.
-# Copyright 2011-2013, Chef Software, Inc.
+# Copyright 2011-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ end
 
 # Loop over the hosts and add 'em
 hosts.each do |host|
-  unless host['key'].nil?
+  if host['key']
     # The key was specified, so use it
     ssh_known_hosts_entry host['fqdn'] do
       key host['key']
