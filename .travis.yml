@@ -1,5 +1,3 @@
-rvm: 2.2
-
 sudo: required
 
 # install the pre-release chef-dk.  Use chef-stable-precise to install the stable release
@@ -22,7 +20,7 @@ env:
   - INSTANCE=cacher-client-centos-71
   - INSTANCE=cacher-ubuntu-1404
   - INSTANCE=cacher-ubuntu-1204
-  - INSTANCE=cacher-centos-71  
+  - INSTANCE=cacher-centos-71
 
 # Don't `bundle install`
 install: echo "skip bundle install"
