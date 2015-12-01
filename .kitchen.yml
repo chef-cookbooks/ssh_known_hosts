@@ -34,3 +34,10 @@ suites:
   attributes:
     ssh_known_hosts:
       use_data_bag_cache: true
+- name: environment_search
+  run_list:
+  - recipe[ssh_known_hosts::default]
+  attributes:
+    ssh_known_hosts:
+      multi_environment:
+      - stage

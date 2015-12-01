@@ -66,6 +66,10 @@ The following attributes are set on a per-platform basis, see the `attributes/de
   key types for ssh-keyscan. Defaults to 'rsa,dsa'
 * `node['ssh_known_hosts']['use_data_bag_cache']` - Use the data bag maintained by the cacher server to build `/etc/ssh/ssh_known_hosts` instead of a direct search (requires that a node be set up to run the cacher recipe regularly).
 * `node['ssh_known_hosts']['cacher']['data_bag']`/`node['ssh_known_hosts']['cacher']['data_bag_item']` - Data bag where cacher recipe should store its keys.
+* `node['ssh_known_hosts']['multi_environment']` - Array of chef environments to search if not empty and
+  cacher is disabled. Defaults to '[]' which means search all environments
+* `node['ssh_known_hosts']['use_search']` - Determines if search is used at all when cacher is disabled.
+  Defaults to true
 
 #### LWRP Attributes
 
