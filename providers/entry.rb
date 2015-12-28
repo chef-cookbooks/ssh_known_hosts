@@ -19,6 +19,8 @@
 
 use_inline_resources if defined?(use_inline_resources)
 
+require 'mixlib/shellout'
+
 def whyrun_supported?
   true
 end
@@ -36,7 +38,11 @@ action :create do
 
   else
 
-    key = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+    run = Mixlib::ShellOut.new("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}", timeout: 15)
+    run.run_command
+    return if run.error?
+    key = run.stdout
+
   end
   comment = key.split("\n").first || ''
 
