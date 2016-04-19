@@ -32,28 +32,27 @@ if node['ssh_known_hosts']['use_data_bag_cache']
     node['ssh_known_hosts']['cacher']['data_bag_item']
   )['keys']
   Chef::Log.info "hosts data bag: #{hosts.inspect}"
-else
+elsif Chef::Config[:solo]
   # Gather a list of all nodes, warning if using Chef Solo
-  if Chef::Config[:solo]
-    Chef::Log.warn 'ssh_known_hosts requires Chef search - Chef Solo does not support search!'
 
-    # On Chef Solo, we still want the current node to be in the ssh_known_hosts
-    hosts = [node]
-  else
-    hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
-                           keys: {
-                             'hostname' => ['hostname'],
-                             'fqdn'     => ['fqdn'],
-                             'ipaddress' => ['ipaddress'],
-                             'host_rsa_public' => %w(keys ssh host_rsa_public),
-                             'host_dsa_public' => %w(keys ssh host_dsa_public)
-                           }
-                          ).collect do |host|
-      {
-        'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-        'key' => host['host_rsa_public'] || host['host_dsa_public']
-      }
-    end
+  Chef::Log.warn 'ssh_known_hosts requires Chef search - Chef Solo does not support search!'
+
+  # On Chef Solo, we still want the current node to be in the ssh_known_hosts
+  hosts = [node]
+else
+  hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
+                         keys: {
+                           'hostname' => ['hostname'],
+                           'fqdn'     => ['fqdn'],
+                           'ipaddress' => ['ipaddress'],
+                           'host_rsa_public' => %w(keys ssh host_rsa_public),
+                           'host_dsa_public' => %w(keys ssh host_dsa_public)
+                         }
+                        ).collect do |host|
+    {
+      'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
+      'key' => host['host_rsa_public'] || host['host_dsa_public']
+    }
   end
 end
 
