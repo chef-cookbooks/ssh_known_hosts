@@ -24,7 +24,7 @@
 if node['ssh_known_hosts']['use_data_bag_cache']
   # Load hosts from the ssh known hosts cacher (if the data bag exists)
   unless Chef::DataBag.list.key?(node['ssh_known_hosts']['cacher']['data_bag'])
-    fail 'use_data_bag_cache is set but the configured data bag was not found'
+    raise 'use_data_bag_cache is set but the configured data bag was not found'
   end
 
   hosts = data_bag_item(

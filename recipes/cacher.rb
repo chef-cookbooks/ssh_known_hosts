@@ -1,6 +1,6 @@
 # Gather a list of all nodes, warning if using Chef Solo
 if Chef::Config[:solo]
-  fail 'ssh_known_hosts::cacher requires Chef search - Chef Solo does ' \
+  raise 'ssh_known_hosts::cacher requires Chef search - Chef Solo does ' \
     'not support search!'
 else
   all_host_keys = partial_search(

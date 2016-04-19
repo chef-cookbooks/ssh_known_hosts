@@ -26,11 +26,11 @@ end
 action :create do
   if new_resource.key
 
-    if new_resource.key_type == 'rsa' || new_resource.key_type == 'dsa'
-      key_type = "ssh-#{new_resource.key_type}"
-    else
-      key_type = new_resource.key_type
-    end
+    key_type = if new_resource.key_type == 'rsa' || new_resource.key_type == 'dsa'
+                 "ssh-#{new_resource.key_type}"
+               else
+                 new_resource.key_type
+               end
 
     key = "#{new_resource.host} #{key_type} #{new_resource.key}"
 
