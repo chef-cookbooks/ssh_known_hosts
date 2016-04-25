@@ -7,7 +7,9 @@
     "keys": {
       "ssh": {
         "host_rsa_public": "TEST_RSA_PUBLIC_KEY_HOST-3",
-        "host_dsa_public": "TEST_DSA_PUBLIC_KEY_HOST-3"
+        "host_dsa_public": "TEST_DSA_PUBLIC_KEY_HOST-3",
+        "host_ecdsa_public": "TEST_ECDSA_PUBLIC_KEY_HOST-3",
+        "host_ed25519_public": "TEST_ED25519_PUBLIC_KEY_HOST-3"
       }
     }
   }

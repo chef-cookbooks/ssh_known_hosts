@@ -7,11 +7,11 @@
     },
     {
       "fqdn": "host-2.vagrantup.com",
-      "key": "TEST_RSA_PUBLIC_KEY_HOST-2"
+      "key": "TEST_ECDSA_PUBLIC_KEY_HOST-2"
     },
     {
       "fqdn": "host-3.vagrantup.com",
-      "key": "TEST_RSA_PUBLIC_KEY_HOST-3"
+      "key": "TEST_ED25519_PUBLIC_KEY_HOST-3"
     }
   ]
 }
