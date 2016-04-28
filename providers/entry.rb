@@ -32,11 +32,22 @@ action :create do
                  new_resource.key_type
                end
 
-    key = "#{new_resource.host} #{key_type} #{new_resource.key}"
-
+    if new_resource.port != 22
+      key = "[#{new_resource.host}]:#{new_resource.port} #{key_type} #{new_resource.key}"
+    else
+      key = "#{new_resource.host} #{key_type} #{new_resource.key}"
+    end
+    
   else
 
-    key = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+    keyscan_result = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+
+    if new_resource.port != 22
+      key = keyscan_result.sub(/^#{new_resource.host}/, "[#{new_resource.host}]:#{new_resource.port}")
+    else
+      key = keyscan_result
+    end
+    
   end
   comment = key.split("\n").first || ''
 
