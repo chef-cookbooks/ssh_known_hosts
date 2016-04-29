@@ -7,5 +7,7 @@ group :unit do
 end
 
 group :integration do
+  cookbook 'yum'
+  cookbook 'apt'
   cookbook 'minitest-handler'
 end
