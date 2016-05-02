@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require 'English'
+
 use_inline_resources if defined?(use_inline_resources)
 
 def whyrun_supported?
@@ -37,7 +39,7 @@ action :create do
     else
       key = "#{new_resource.host} #{key_type} #{new_resource.key}"
     end
-    
+
   else
 
     keyscan_result = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
@@ -47,7 +49,7 @@ action :create do
     else
       key = keyscan_result
     end
-    
+
   end
   comment = key.split("\n").first || ''
 
