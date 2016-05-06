@@ -53,7 +53,8 @@ else
                         ).collect do |host|
     {
       'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-      'key' => host['host_ed25519_public'] || host['host_ecdsa_public'] || host['host_rsa_public'] || host['host_dsa_public']
+      'key' => SshknownhostsCookbook.key_from(host).key,
+      'key_type' => SshknownhostsCookbook.key_from(host).cipher
     }
   end
 end
@@ -66,7 +67,7 @@ if Chef::DataBag.list.key?('ssh_known_hosts')
       entry = data_bag_item('ssh_known_hosts', item)
       {
         'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
-        'key'  => entry['rsa'] || entry['dsa']
+        'key'  => entry['ed25519'] || entry['ecdsa'] || entry['rsa'] || entry['dsa']
       }
     end
   rescue
@@ -80,6 +81,7 @@ hosts.each do |host|
     # The key was specified, so use it
     ssh_known_hosts_entry host['fqdn'] do
       key host['key']
+      key_type host['key_type']
     end
   else
     # No key specified, so have known_host perform a DNS lookup

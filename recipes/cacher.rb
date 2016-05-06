@@ -17,7 +17,8 @@ else
   ).collect do |host|
     {
       'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-      'key' => host['host_ed25519_public'] || host['host_ecdsa_public'] || host['host_rsa_public'] || host['host_dsa_public']
+      'key' => SshknownhostsCookbook.key_from(host).key,
+      'key_type' => SshknownhostsCookbook.key_from(host).cipher
     }
   end
   Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
