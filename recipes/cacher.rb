@@ -3,24 +3,7 @@ if Chef::Config[:solo]
   raise 'ssh_known_hosts::cacher requires Chef search - Chef Solo does ' \
     'not support search!'
 else
-  all_host_keys = partial_search(
-    :node, 'keys:*',
-    keys: {
-      'hostname'        => ['hostname'],
-      'fqdn'            => ['fqdn'],
-      'ipaddress'       => ['ipaddress'],
-      'host_rsa_public' => %w(keys ssh host_rsa_public),
-      'host_dsa_public' => %w(keys ssh host_dsa_public),
-      'host_ecdsa_public' => %w(keys ssh host_ecdsa_public),
-      'host_ed25519_public' => %w(keys ssh host_ed25519_public)
-    }
-  ).collect do |host|
-    {
-      'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-      'key' => SshknownhostsCookbook.key_from(host).key,
-      'key_type' => SshknownhostsCookbook.key_from(host).cipher
-    }
-  end
+  all_host_keys = SshknownhostsCookbook::KeysSearch.hosts_keys('keys:*')
   Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
 end
 

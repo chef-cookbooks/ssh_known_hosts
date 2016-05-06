@@ -40,23 +40,7 @@ elsif Chef::Config[:solo]
   # On Chef Solo, we still want the current node to be in the ssh_known_hosts
   hosts = [node]
 else
-  hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
-                         keys: {
-                           'hostname' => ['hostname'],
-                           'fqdn'     => ['fqdn'],
-                           'ipaddress' => ['ipaddress'],
-                           'host_rsa_public' => %w(keys ssh host_rsa_public),
-                           'host_dsa_public' => %w(keys ssh host_dsa_public),
-                           'host_ecdsa_public' => %w(keys ssh host_ecdsa_public),
-                           'host_ed25519_public' => %w(keys ssh host_ed25519_public)
-                         }
-                        ).collect do |host|
-    {
-      'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-      'key' => SshknownhostsCookbook.key_from(host).key,
-      'key_type' => SshknownhostsCookbook.key_from(host).cipher
-    }
-  end
+  hosts = SshknownhostsCookbook::KeysSearch.hosts_keys("keys_ssh:* NOT name:#{node.name}")
 end
 
 # Add the data from the data_bag to the list of nodes.
