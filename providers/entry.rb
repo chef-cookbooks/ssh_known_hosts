@@ -43,12 +43,14 @@ action :create do
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
   else
+    require 'English'
+
     new_keys = (keys + [key]).uniq.sort
     file "ssh_known_hosts-#{new_resource.name}" do
       path node['ssh_known_hosts']['file']
       action :create
       backup false
-      content "#{new_keys.join($INPUT_RECORD_SEPARATOR)}#{$INPUT_RECORD_SEPARATOR}"
+      content "#{new_keys.join($RS)}#{$RS}"
     end
   end
 end
