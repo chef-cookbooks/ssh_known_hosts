@@ -7,5 +7,7 @@ describe 'Known Hosts' do
     its(:content) { should include "ssh-rsa TEST_RSA_PUBLIC_KEY_HOST-1\n" }
     its(:content) { should include "ecdsa-sha2-nistp256 TEST_ECDSA_PUBLIC_KEY_HOST-2\n" }
     its(:content) { should include "ssh-ed25519 TEST_ED25519_PUBLIC_KEY_HOST-3\n" }
+    it { should be_mode 644 }
+    it { should be_owned_by 'root' }
   end
 end

@@ -51,6 +51,7 @@ action :create do
       action :create
       backup false
       content "#{new_keys.join($RS)}#{$RS}"
+      mode 0644
     end
   end
 end
