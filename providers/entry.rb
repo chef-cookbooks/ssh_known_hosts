@@ -37,8 +37,18 @@ action :create do
   else
 
     key = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+    key = `ssh-keyscan -trsa -p 222 pog-git.phoenixonegames.com`
   end
   comment = key.split("\n").first || ''
+
+  # older versions of openssh-client fail to output key with port despite being
+  # specified. SSH-2.0-OpenSSH_6.7p1 Debian-5+deb8u2 tested. this bug is tested
+  # for and corrected here
+  key_fields = key.split
+  if new_resource.port and !key_fields[0].end_with?(":#{new_resource.port}")
+    key_fields[0] = "[#{key_fields[0]}]:#{new_resource.port}";
+    key = key_fields.join ' '
+  end
 
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
