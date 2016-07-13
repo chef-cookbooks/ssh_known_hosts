@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require 'English'
+
 use_inline_resources if defined?(use_inline_resources)
 
 def whyrun_supported?
@@ -32,11 +34,22 @@ action :create do
                  new_resource.key_type
                end
 
-    key = "#{new_resource.host} #{key_type} #{new_resource.key}"
+    key = if new_resource.port != 22
+            "[#{new_resource.host}]:#{new_resource.port} #{key_type} #{new_resource.key}"
+          else
+            "#{new_resource.host} #{key_type} #{new_resource.key}"
+          end
 
   else
 
-    key = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+    keyscan_result = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+
+    key = if new_resource.port != 22
+            keyscan_result.sub(/^#{new_resource.host}/, "[#{new_resource.host}]:#{new_resource.port}")
+          else
+            keyscan_result
+          end
+
   end
   comment = key.split("\n").first || ''
 
