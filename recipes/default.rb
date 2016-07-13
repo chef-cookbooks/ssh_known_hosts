@@ -40,20 +40,7 @@ elsif Chef::Config[:solo]
   # On Chef Solo, we still want the current node to be in the ssh_known_hosts
   hosts = [node]
 else
-  hosts = partial_search(:node, "keys_ssh:* NOT name:#{node.name}",
-                         keys: {
-                           'hostname' => ['hostname'],
-                           'fqdn'     => ['fqdn'],
-                           'ipaddress' => ['ipaddress'],
-                           'host_rsa_public' => %w(keys ssh host_rsa_public),
-                           'host_dsa_public' => %w(keys ssh host_dsa_public)
-                         }
-                        ).collect do |host|
-    {
-      'fqdn' => host['fqdn'] || host['ipaddress'] || host['hostname'],
-      'key' => host['host_rsa_public'] || host['host_dsa_public']
-    }
-  end
+  hosts = SshknownhostsCookbook::KeysSearch.hosts_keys("keys_ssh:* NOT name:#{node.name}")
 end
 
 # Add the data from the data_bag to the list of nodes.
@@ -64,7 +51,7 @@ if Chef::DataBag.list.key?('ssh_known_hosts')
       entry = data_bag_item('ssh_known_hosts', item)
       {
         'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
-        'key'  => entry['rsa'] || entry['dsa']
+        'key'  => entry['ed25519'] || entry['ecdsa'] || entry['rsa'] || entry['dsa']
       }
     end
   rescue
@@ -78,6 +65,7 @@ hosts.each do |host|
     # The key was specified, so use it
     ssh_known_hosts_entry host['fqdn'] do
       key host['key']
+      key_type host['key_type']
     end
   else
     # No key specified, so have known_host perform a DNS lookup
