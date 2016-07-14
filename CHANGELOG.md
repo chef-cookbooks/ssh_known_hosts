@@ -2,6 +2,11 @@ ssh_known_hosts CHANGELOG
 ===================
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+v2.1.0 (2016-07-13)
+-------------------
+- [#51] Add support for ECDSA and ED25519 keys josacar
+- [#42] Check for nil FQDN realloc
+
 v2.0.0 (2014-12-02)
 -------------------
 - [#36] Fix the way keys are rendered
