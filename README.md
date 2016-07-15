@@ -13,20 +13,20 @@ The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for addi
 You can also optionally put other host keys in a data bag called "`ssh_known_hosts`". See below for details.
 
 
-Requirements
-------------
+## Requirements
+
+### Platforms
+
 Should work on any operating system that supports `/etc/ssh/ssh_known_hosts`.
 
-The Chef Software `partial_search` cookbook is required for the default recipe, as well as a Chef Server that supports partial search:
+### Chef
 
-- Chef Software Hosted Chef
-- Chef Software Private Chef
-- Open Source Chef Server 11
+As of version 3.0.0 this cookbook is Chef 12.0+ as we have eliminated the use of the now deprecated partial_search cookbook. [Filtered search](https://docs.chef.io/chef_search.html) is included as of chef-client 12.0.
 
 
-Usage
------
-### LWRP
+## Usage
+
+## Resources
 
 Use the LWRP `ssh_known_hosts_entry` to append an entry for the specified host in `/etc/ssh/ssh_known_hosts`. For example:
 
@@ -171,7 +171,7 @@ There are additional optional values you may use in the data bag:
   </tbody>
 </table>
 
-###ChefSpec matchers
+### ChefSpec matchers
 
 A custom matcher is available for you to use in recipe tests.
 
@@ -188,7 +188,7 @@ License & Authors
 
 **Author:** Cookbook Engineering Team (<cookbooks@chef.io>)
 
-**Copyright:** 2008-2015, Chef Software, Inc.
+**Copyright:** 2008-2016, Chef Software, Inc.
 
 ```
 Licensed under the Apache License, Version 2.0 (the "License");

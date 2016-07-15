@@ -15,9 +15,9 @@ module SshknownhostsCookbook
     extend Chef::DSL::DataQuery
 
     def self.hosts_keys(pattern)
-      partial_search(
+      search(
         :node, pattern,
-        keys: {
+        filter_result: {
           'hostname'        => ['hostname'],
           'fqdn'            => ['fqdn'],
           'ipaddress'       => ['ipaddress'],
