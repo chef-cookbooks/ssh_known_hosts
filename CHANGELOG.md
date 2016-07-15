@@ -2,6 +2,10 @@ ssh_known_hosts CHANGELOG
 ===================
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+v3.0.0 (2016-07-14)
+-------------------
+- [#55] Remove deprecated cookbook dependency on partial_search making cookbook Chef 12+ only
+
 v2.1.0 (2016-07-13)
 -------------------
 - [#51] Add support for ECDSA and ED25519 keys josacar

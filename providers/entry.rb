@@ -36,7 +36,7 @@ action :create do
 
   else
 
-    key = `ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}`
+    key = shellout("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}")
   end
   comment = key.split("\n").first || ''
 
