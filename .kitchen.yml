@@ -38,3 +38,6 @@ suites:
   attributes:
     ssh_known_hosts:
       use_data_bag_cache: true
+- name: known_hosts_test
+  run_list:
+  - recipe[ssh_known_hosts_test]
