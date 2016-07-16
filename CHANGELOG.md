@@ -2,6 +2,12 @@ ssh_known_hosts CHANGELOG
 ===================
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+v3.0.1 (2016-07-15)
+-------------------
+- [#58] Fix issues brought in with v3.0.0 with ssh-keyscan
+- [#58] Add timeout parameter to entry resource associated with ssh-keyscan
+- [#58] Cleaned up some extraneous old chef-solo code
+
 v3.0.0 (2016-07-14)
 -------------------
 - [#55] Remove deprecated cookbook dependency on partial_search making cookbook Chef 12+ only
