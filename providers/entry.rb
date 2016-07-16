@@ -38,7 +38,7 @@ action :create do
     key = keyscan.stdout
   end
 
-  comment = key.stdout.split("\n").first || ''
+  comment = key.split("\n").first || ''
 
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
