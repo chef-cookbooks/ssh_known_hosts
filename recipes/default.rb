@@ -32,13 +32,6 @@ if node['ssh_known_hosts']['use_data_bag_cache']
     node['ssh_known_hosts']['cacher']['data_bag_item']
   )['keys']
   Chef::Log.info "hosts data bag: #{hosts.inspect}"
-elsif Chef::Config[:solo]
-  # Gather a list of all nodes, warning if using Chef Solo
-
-  Chef::Log.warn 'ssh_known_hosts requires Chef search - Chef Solo does not support search!'
-
-  # On Chef Solo, we still want the current node to be in the ssh_known_hosts
-  hosts = [node]
 else
   hosts = SshknownhostsCookbook::KeysSearch.hosts_keys("keys_ssh:* NOT name:#{node.name}")
 end

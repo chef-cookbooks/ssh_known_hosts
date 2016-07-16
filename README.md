@@ -69,39 +69,12 @@ The following attributes are set on a per-platform basis, see the `attributes/de
 
 #### LWRP Attributes
 
-<table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Description</th>
-      <th>Example</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td>host</td>
-      <td>the host to add</td>
-      <td><tt>github.com</tt></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>key</td>
-      <td>(optional) provide your own key</td>
-      <td><tt>ssh-rsa ...</tt></td>
-      <td><tt>ssh-keyscan -H #{host}</tt></td>
-    </tr>
-    <tr>
-      <td>port</td>
-      <td>(optional) the server port that ssh-keyscan will use to gather the public key</td>
-      <td><tt>2222</tt></td>
-      <td><tt>22</tt></td>
-    </tr>
-  </tbody>
-</table>
-
-- - -
+| Attribute | Description                                                                  | Example       | Default                |
+|-----------|------------------------------------------------------------------------------|---------------|------------------------|
+| host      | the host to add                                                              | github.com    |                        |
+| key       | (optional) provide your own key                                              | ssh-rsa ...   | ssh-keyscan -H #{host} |
+| port      | (optional) the server port that ssh-keyscan will use to gater the public key | 2222          | 22                     |
+| timeout   | (optional) limit the length of time ssh-keyscan will run for  (seconds)      | 90            | 30                     |
 
 ### Default Recipe
 
@@ -121,55 +94,15 @@ There are two ways to add custom host keys. You can either use the provided LWRP
 
 There are additional optional values you may use in the data bag:
 
-<table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Description</th>
-      <th>Example</th>
-      <th>Default</th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <tr>
-      <td>id</td>
-      <td>a unique id for this data bag entry</td>
-      <td><tt>github</tt></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>fqdn</td>
-      <td>the fqdn of the host</td>
-      <td><tt>github.com</tt></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>rsa</td>
-      <td>the rsa key for this server</td>
-      <td><tt>ssh-rsa AAAAB3...</tt></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>ipaddress</td>
-      <td>the ipaddress of the node (if fqdn is missing)</td>
-      <td><tt>1.1.1.1</tt></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>hostname</td>
-      <td>local hostname of the server (if not a fqdn)</td>
-      <td><tt>myserver.local</tt></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>dsa</td>
-      <td>the dsa key for this server</td>
-      <td><tt>ssh-dsa ABAAC3...</tt></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+| Attribute | Description                                         | Example           |
+|-----------|-----------------------------------------------------|-------------------|
+| id        | a unique id for this data bag entry                 | github            |
+| fqdn      | the fqdn of the host                                | github.com        |
+| rsa       | the rsa key for this server                         | ssh-rsa AAAAB3... |
+| ipaddress | the ipaddress of the node (if fqdn is not supplied) | 1.1.1.1           |
+| hostname  | local hostname of the server (if not a fqdn)        | myserver.local    |
+| dsa       | the dsa key for this server                         | ssh-dsa ABAAC3... |
 
 ### ChefSpec matchers
 

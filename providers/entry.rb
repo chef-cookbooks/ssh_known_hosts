@@ -33,12 +33,11 @@ action :create do
                end
 
     key = "#{new_resource.host} #{key_type} #{new_resource.key}"
-
   else
-
-    key = shellout("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}")
+    keyscan = shell_out!("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}", timeout: new_resource.timeout)
   end
-  comment = key.split("\n").first || ''
+
+  comment = keyscan.stdout.split("\n").first || ''
 
   if key_exists?(key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"

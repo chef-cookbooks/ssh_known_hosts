@@ -1,11 +1,6 @@
-# Gather a list of all nodes, warning if using Chef Solo
-if Chef::Config[:solo]
-  raise 'ssh_known_hosts::cacher requires Chef search - Chef Solo does ' \
-    'not support search!'
-else
-  all_host_keys = SshknownhostsCookbook::KeysSearch.hosts_keys('keys:*')
-  Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
-end
+
+all_host_keys = SshknownhostsCookbook::KeysSearch.hosts_keys('keys:*')
+Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
 
 new_data_bag_content = {
   'id' => node['ssh_known_hosts']['cacher']['data_bag_item'],
