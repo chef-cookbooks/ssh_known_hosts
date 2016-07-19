@@ -24,6 +24,9 @@ attribute :key, kind_of: String
 attribute :key_type, kind_of: String, default: 'rsa'
 attribute :port, kind_of: Fixnum, default: 22
 attribute :timeout, kind_of: Fixnum, default: 30
+attribute :mode, kind_of: String, default: '0644'
+attribute :owner, kind_of: String, default: 'root'
+attribute :group, kind_of: String, default: 'root'
 
 def initialize(*args)
   super

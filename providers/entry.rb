@@ -48,10 +48,12 @@ action :create do
     new_keys = (keys + [key]).uniq.sort
     file "ssh_known_hosts-#{new_resource.name}" do
       path node['ssh_known_hosts']['file']
+      owner new_resource.owner
+      group new_resource.group
+      mode new_resource.mode
       action :create
       backup false
       content "#{new_keys.join($RS)}#{$RS}"
-      mode 0644
     end
   end
 end

@@ -1,1 +1,2 @@
-ssh_known_hosts_entry 'github.com'
+include_recipe 'openssh::default'
+include_recipe 'ssh_known_hosts::default'

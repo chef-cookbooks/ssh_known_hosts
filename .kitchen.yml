@@ -12,10 +12,9 @@ platforms:
     run_list: apt::default
   - name: debian-8.4
     run_list: apt::default
-  - name: fedora-22
-    run_list: yum::dnf_yum_compat
   - name: fedora-23
     run_list: yum::dnf_yum_compat
+  - name: opensuse-13.2
   - name: ubuntu-12.04
     run_list: apt::default
   - name: ubuntu-14.04
@@ -26,18 +25,18 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[ssh_known_hosts]
+  - recipe[ssh_known_hosts_test]
   attributes: {}
 - name: cacher
   run_list:
-  - recipe[ssh_known_hosts::cacher]
+  - recipe[ssh_known_hosts_test::cacher]
   attributes: {}
 - name: cacher-client
   run_list:
-  - recipe[ssh_known_hosts::default]
+  - recipe[ssh_known_hosts_test::default]
   attributes:
     ssh_known_hosts:
       use_data_bag_cache: true
 - name: known_hosts_test
   run_list:
-  - recipe[ssh_known_hosts_test]
+  - recipe[ssh_known_hosts_test::custom]

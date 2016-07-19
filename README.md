@@ -4,7 +4,7 @@ ssh_known_hosts Cookbook
 [![Build Status](https://travis-ci.org/chef-cookbooks/ssh_known_hosts.svg?branch=master)](http://travis-ci.org/chef-cookbooks/ssh_known_hosts)
 [![Cookbook Version](https://img.shields.io/cookbook/v/ssh_known_hosts.svg)](https://supermarket.chef.io/cookbooks/ssh_known_hosts)
 
-The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file.
+The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file, the global file for public keys on known hosts. 
 
 - The default recipe builds `/etc/ssh/ssh_known_hosts` based either on search indexes using `rsa,dsa` key types and ohai data **or**, when `['ssh_known_hosts']['use_data_bag_cache']` is `true`, on the contents of a data bag that is maintained by the `cacher` recipe running on a worker node.
 - The cacher recipe builds and maintains a data bag based on search indexes using `rsa,dsa` key types and ohai data.
@@ -75,6 +75,9 @@ The following attributes are set on a per-platform basis, see the `attributes/de
 | key       | (optional) provide your own key                                              | ssh-rsa ...   | ssh-keyscan -H #{host} |
 | port      | (optional) the server port that ssh-keyscan will use to gater the public key | 2222          | 22                     |
 | timeout   | (optional) limit the length of time ssh-keyscan will run for  (seconds)      | 90            | 30                     |
+| mode      | (optional) set the mode explicitly on the /etc/ssh/ssh_known_hosts file      | '0644'        | '0644'                 |
+| owner     | (optional) set the owner explicitly on the /etc/ssh/ssh_known_hosts file     | 'root'        | 'root'                 |
+| group     | (optional) set the group explicitly on the /etc/ssh/ssh_known_hosts file     | 'wheel'       | 'root'                 |
 
 ### Default Recipe
 

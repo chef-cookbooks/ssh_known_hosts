@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'ssh_known_hosts_test::default' do
+describe 'ssh_known_hosts_test::custom' do
   let(:chef_run) do
     ChefSpec::SoloRunner.converge(described_recipe)
   end
