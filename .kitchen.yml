@@ -25,18 +25,18 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[ssh_known_hosts]
+  - recipe[ssh_known_hosts_test]
   attributes: {}
 - name: cacher
   run_list:
-  - recipe[ssh_known_hosts::cacher]
+  - recipe[ssh_known_hosts_test::cacher]
   attributes: {}
 - name: cacher-client
   run_list:
-  - recipe[ssh_known_hosts::default]
+  - recipe[ssh_known_hosts_test::default]
   attributes:
     ssh_known_hosts:
       use_data_bag_cache: true
 - name: known_hosts_test
   run_list:
-  - recipe[ssh_known_hosts_test]
+  - recipe[ssh_known_hosts_test::custom]
