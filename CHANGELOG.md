@@ -2,6 +2,10 @@ ssh_known_hosts CHANGELOG
 ===================
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+v3.1.0 (2016-07-18)
+-------------------
+- [#59] adds mode, owner, group attributes to the entry resource
+
 v3.0.1 (2016-07-15)
 -------------------
 - [#58] Fix issues brought in with v3.0.0 with ssh-keyscan
