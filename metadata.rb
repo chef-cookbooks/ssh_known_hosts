@@ -9,3 +9,5 @@ recipe            'ssh_known_hosts', 'Provides an LWRP for managing SSH known ho
 
 source_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 issues_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
+
+chef_version '>= 12.1'
