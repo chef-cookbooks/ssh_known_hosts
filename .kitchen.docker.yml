@@ -11,7 +11,6 @@ provisioner:
 
 verifier:
   name: inspec
-  format: doc
 
 platforms:
 - name: debian-7
@@ -20,7 +19,7 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get install lsb-release -y
+      - RUN /usr/bin/apt-get install lsb-release procps -y
 
 - name: debian-8
   driver:
@@ -95,3 +94,22 @@ platforms:
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive
+      
+suites:
+- name: default
+  run_list:
+  - recipe[ssh_known_hosts_test]
+  attributes: {}
+- name: cacher
+  run_list:
+  - recipe[ssh_known_hosts_test::cacher]
+  attributes: {}
+- name: cacher-client
+  run_list:
+  - recipe[ssh_known_hosts_test::default]
+  attributes:
+    ssh_known_hosts:
+      use_data_bag_cache: true
+- name: known_hosts_test
+  run_list:
+  - recipe[ssh_known_hosts_test::custom]
