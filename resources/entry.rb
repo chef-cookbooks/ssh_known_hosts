@@ -27,8 +27,3 @@ attribute :timeout, kind_of: Fixnum, default: 30
 attribute :mode, kind_of: String, default: '0644'
 attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
-
-def initialize(*args)
-  super
-  @action = :create
-end
