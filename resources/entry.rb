@@ -45,7 +45,7 @@ action :create do
   comment = key.split("\n").first || ''
 
   r = with_run_context :root do
-    # XXX: remove once delayed_actions lands in compat_resource
+    # XXX: remove log resource once delayed_actions lands in compat_resource
     find_resource(:log, "force delayed notification") do
       notifies :create, "file[update ssh known hosts file]", :delayed
     end
