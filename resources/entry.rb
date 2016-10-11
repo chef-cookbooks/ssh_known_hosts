@@ -30,7 +30,6 @@ attribute :group, kind_of: String, default: 'root'
 
 action :create do
   if new_resource.key
-
     key_type = if new_resource.key_type == 'rsa' || new_resource.key_type == 'dsa'
                  "ssh-#{new_resource.key_type}"
                else
@@ -45,42 +44,37 @@ action :create do
 
   comment = key.split("\n").first || ''
 
-  if key_exists?(key, comment)
-    Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
-  else
-    require 'English'
-
-    new_keys = (keys + [key]).uniq.sort
-    file "ssh_known_hosts-#{new_resource.name}" do
+  r = with_run_context :root do
+    # XXX: remove log resource once delayed_actions lands in compat_resource
+    find_resource(:log, 'force delayed notification') do
+      notifies :create, 'file[update ssh known hosts file]', :delayed
+    end
+    find_resource(:file, 'update ssh known hosts file') do
       path node['ssh_known_hosts']['file']
       owner new_resource.owner
       group new_resource.group
       mode new_resource.mode
-      action :create
+      action :nothing
       backup false
-      content "#{new_keys.join($RS)}#{$RS}"
+      content ''
     end
+  end
+
+  keys = key_array(r.content)
+
+  if key_exists?(keys, key, comment)
+    Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
+  else
+    r.content keys.push(key).sort.uniq.join("\n") << "\n"
   end
 end
 
 action_class do
-  def keys
-    unless @keys
-      if key_file_exists?
-        lines = ::File.readlines(node['ssh_known_hosts']['file'])
-        @keys = lines.map(&:chomp).reject(&:empty?)
-      else
-        @keys = []
-      end
-    end
-    @keys
+  def key_array(keystr)
+    keystr.split("\n").reject(&:empty?)
   end
 
-  def key_file_exists?
-    ::File.exist?(node['ssh_known_hosts']['file'])
-  end
-
-  def key_exists?(key, comment)
+  def key_exists?(keys, key, comment)
     keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
