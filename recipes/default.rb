@@ -40,7 +40,7 @@ end
 # We need to rescue in case the data_bag doesn't exist.
 if Chef::DataBag.list.key?('ssh_known_hosts')
   begin
-    hosts += data_bag('ssh_known_hosts').collect do |item|
+    hosts += data_bag('ssh_known_hosts').map do |item|
       entry = data_bag_item('ssh_known_hosts', item)
       {
         'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
@@ -52,16 +52,4 @@ if Chef::DataBag.list.key?('ssh_known_hosts')
   end
 end
 
-# Loop over the hosts and add 'em
-hosts.each do |host|
-  if host['key']
-    # The key was specified, so use it
-    ssh_known_hosts_entry host['fqdn'] do
-      key host['key']
-      key_type host['key_type']
-    end
-  else
-    # No key specified, so have known_host perform a DNS lookup
-    ssh_known_hosts_entry host['fqdn'] unless host['fqdn'].nil?
-  end
-end
+ssh_known_host_entries hosts
