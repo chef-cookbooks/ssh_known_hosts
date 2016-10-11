@@ -60,22 +60,22 @@ action :create do
     end
   end
 
-  if key_exists?(key_array(r.content), key, comment)
+  keys = key_array(r.content)
+
+  if key_exists?(keys, key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
   else
-    r.content << key << "\n"
-    # FIXME: unsorted for now, and isn't uniq redundant with the check above?
-    # new_keys = (keys + [key]).uniq.sort
+    r.content keys.push(key).sort.uniq.join("\n") << "\n"
   end
 end
 
 action_class do
-  def key_array(keys)
-    keys.split("\n").reject(&:empty?)
+  def key_array(keystr)
+    keystr.split("\n").reject(&:empty?)
   end
 
-  def key_exists?(key_array, key, comment)
-    key_array.any? do |line|
+  def key_exists?(keys, key, comment)
+    keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
   end
