@@ -28,8 +28,6 @@ attribute :mode, kind_of: String, default: '0644'
 attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
 
-
-
 action :create do
   if new_resource.key
 
