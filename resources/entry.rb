@@ -29,18 +29,21 @@ attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
 
 action :create do
-  if new_resource.key
+  key = if new_resource.key
     key_type = if new_resource.key_type == 'rsa' || new_resource.key_type == 'dsa'
                  "ssh-#{new_resource.key_type}"
                else
                  new_resource.key_type
                end
 
-    key = "#{new_resource.host} #{key_type} #{new_resource.key}"
+    hoststr = new_resource.port ? "[#{new_resource.host}]:#{new_resource.port}" : new_resource.host
+    "#{hoststr} #{key_type} #{new_resource.key}"
   else
     keyscan = shell_out!("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}", timeout: new_resource.timeout)
-    key = keyscan.stdout
+    keyscan.stdout
   end
+
+  key.sub!(/^#{new_resource.host}/, "[#{new_resource.host}]:#{new_resource.port}") if new_resource.port != 22
 
   comment = key.split("\n").first || ''
 
