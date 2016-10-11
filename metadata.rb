@@ -11,3 +11,5 @@ source_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 issues_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 
 chef_version '>= 12.1'
+
+depends 'compat_resource'
