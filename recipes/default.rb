@@ -32,24 +32,9 @@ if node['ssh_known_hosts']['use_data_bag_cache']
     node['ssh_known_hosts']['cacher']['data_bag_item']
   )['keys']
   Chef::Log.info "hosts data bag: #{hosts.inspect}"
+  ssh_known_host_entries hosts
 else
-  hosts = SshknownhostsCookbook::KeysSearch.hosts_keys("keys_ssh:* NOT name:#{node.name}")
+  ssh_known_hosts_from_node_search("keys_ssh:* AND -name:#{node.name}")
 end
 
-# Add the data from the data_bag to the list of nodes.
-# We need to rescue in case the data_bag doesn't exist.
-if Chef::DataBag.list.key?('ssh_known_hosts')
-  begin
-    hosts += data_bag('ssh_known_hosts').map do |item|
-      entry = data_bag_item('ssh_known_hosts', item)
-      {
-        'fqdn' => entry['fqdn'] || entry['ipaddress'] || entry['hostname'],
-        'key'  => entry['ed25519'] || entry['ecdsa'] || entry['rsa'] || entry['dsa']
-      }
-    end
-  rescue
-    Chef::Log.info "Could not load data bag 'ssh_known_hosts'"
-  end
-end
-
-ssh_known_host_entries hosts
+ssh_known_hosts_from_data_bag('ssh_known_hosts')
