@@ -32,7 +32,9 @@ action_class do
   def type_string(key_type)
     type_map = {
       'rsa' => 'ssh-rsa',
-      'dsa' => 'ssh-dss'
+      'dsa' => 'ssh-dss',
+      'ecdsa' => 'ecdsa-sha2-nistp256',
+      'ed25519' => 'ssh-ed25519'
     }
     type_map[key_type] || key_type
   end

@@ -1,5 +1,5 @@
 
-all_host_keys = SshknownhostsCookbook::KeysSearch.hosts_keys('keys:*')
+all_host_keys = ssh_known_hosts_partial_query('keys:*')
 Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
 
 new_data_bag_content = {
