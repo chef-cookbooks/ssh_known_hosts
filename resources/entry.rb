@@ -57,33 +57,33 @@ action :create do
   r = with_run_context :root do
     # XXX: remove log resource once delayed_actions lands in compat_resource
     find_resource(:log, 'force delayed notification') do
-      notifies :create, 'file[update ssh known hosts file]', :delayed
+      notifies :create, 'template[update ssh known hosts file]', :delayed
     end
-    find_resource(:file, 'update ssh known hosts file') do
+    find_resource(:template, 'update ssh known hosts file') do
+      source 'ssh_known_hosts.erb'
       path node['ssh_known_hosts']['file']
       owner new_resource.owner
       group new_resource.group
       mode new_resource.mode
       action :nothing
       backup false
-      content ''
+      variables(entries: [])
     end
   end
 
-  keys = key_array(r.content)
+  # messing with the run_context appears to cause issues with the cookbook_name
+  r.cookbook_name = 'ssh_known_hosts'
+
+  keys = r.variables[:entries].reject(&:empty?)
 
   if key_exists?(keys, key, comment)
     Chef::Log.debug "Known hosts key for #{new_resource.name} already exists - skipping"
   else
-    r.content keys.push(key).sort.uniq.join("\n") << "\n"
+    r.variables[:entries].push(key)
   end
 end
 
 action_class do
-  def key_array(keystr)
-    keystr.split("\n").reject(&:empty?)
-  end
-
   def key_exists?(keys, key, comment)
     keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
