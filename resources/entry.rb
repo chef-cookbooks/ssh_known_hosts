@@ -60,7 +60,7 @@ action :create do
       notifies :create, 'template[update ssh known hosts file]', :delayed
     end
     find_resource(:template, 'update ssh known hosts file') do
-      source "ssh_known_hosts.erb"
+      source 'ssh_known_hosts.erb'
       path node['ssh_known_hosts']['file']
       owner new_resource.owner
       group new_resource.group
@@ -72,7 +72,7 @@ action :create do
   end
 
   # messing with the run_context appears to cause issues with the cookbook_name
-  r.cookbook_name = "ssh_known_hosts"
+  r.cookbook_name = 'ssh_known_hosts'
 
   keys = r.variables[:entries].reject(&:empty?)
 
