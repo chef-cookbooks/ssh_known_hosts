@@ -27,14 +27,20 @@ if node['ssh_known_hosts']['use_data_bag_cache']
     raise 'use_data_bag_cache is set but the configured data bag was not found'
   end
 
+  pp data_bag_item(
+    node['ssh_known_hosts']['cacher']['data_bag'],
+    node['ssh_known_hosts']['cacher']['data_bag_item']
+  )
+
   hosts = data_bag_item(
     node['ssh_known_hosts']['cacher']['data_bag'],
     node['ssh_known_hosts']['cacher']['data_bag_item']
   )['keys']
   Chef::Log.info "hosts data bag: #{hosts.inspect}"
-  ssh_known_host_entries hosts
+  ssh_known_hosts_entries hosts
 else
-  ssh_known_hosts_from_node_search("keys_ssh:* AND -name:#{node.name}")
+  # FIXME: should change the syntax here, but chef-zero's search parser is broken
+  ssh_known_hosts_from_node_search("keys_ssh:* NOT name:#{node.name}")
 end
 
 ssh_known_hosts_from_data_bag('ssh_known_hosts')
