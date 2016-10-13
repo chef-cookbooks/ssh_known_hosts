@@ -27,11 +27,6 @@ if node['ssh_known_hosts']['use_data_bag_cache']
     raise 'use_data_bag_cache is set but the configured data bag was not found'
   end
 
-  pp data_bag_item(
-    node['ssh_known_hosts']['cacher']['data_bag'],
-    node['ssh_known_hosts']['cacher']['data_bag_item']
-  )
-
   hosts = data_bag_item(
     node['ssh_known_hosts']['cacher']['data_bag'],
     node['ssh_known_hosts']['cacher']['data_bag_item']
