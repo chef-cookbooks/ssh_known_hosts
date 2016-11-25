@@ -1,13 +1,13 @@
 #
-# Cookbook Name:: ssh_known_hosts
+# Cookbook:: ssh_known_hosts
 # Recipe:: default
 #
 # Author:: Scott M. Likens (<scott@likens.us>)
 # Author:: Joshua Timberman (<joshua@chef.io>)
 # Author:: Seth Vargo (<sethvargo@gmail.com>)
 #
-# Copyright 2009, Adapp, Inc.
-# Copyright 2011-2016, Chef Software, Inc.
+# Copyright:: 2009-2016, Adapp, Inc.
+# Copyright:: 2011-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
