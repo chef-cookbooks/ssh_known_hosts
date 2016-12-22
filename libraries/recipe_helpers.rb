@@ -11,7 +11,7 @@ module SshknownhostsRecipeHelpers
         'rsa' => %w(keys ssh host_rsa_public),
         'dsa' => %w(keys ssh host_dsa_public),
         'ecdsa' => %w(keys ssh host_ecdsa_public),
-        'ed25519' => %w(keys ssh host_ed25519_public)
+        'ed25519' => %w(keys ssh host_ed25519_public),
       }
     )
   end
@@ -41,7 +41,7 @@ module SshknownhostsRecipeHelpers
       {
         'fqdn' => fqdn_from_node(host),
         'key' => key_from_node(host),
-        'key_type' => key_type_from_node(host)
+        'key_type' => key_type_from_node(host),
       }
     end
     ssh_known_hosts_entries hosts

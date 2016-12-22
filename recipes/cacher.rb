@@ -4,7 +4,7 @@ Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
 
 new_data_bag_content = {
   'id' => node['ssh_known_hosts']['cacher']['data_bag_item'],
-  'keys' => all_host_keys
+  'keys' => all_host_keys,
 }
 
 Chef::Log.debug("New data bag content: #{new_data_bag_content.inspect}")
