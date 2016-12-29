@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 4.1.0 (2016-12-29)
+
+- Convert entry LWRP to a custom_resource with a delayed accumulator pattern
+- Resolve sort ordering issues
+- Fix for non-port-22 issues
+- Add helper correctly in the recipe DSL
+
 ## 4.0.0 (2016-09-07)
 
 - Require chef 12+
