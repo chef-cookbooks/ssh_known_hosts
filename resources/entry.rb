@@ -43,7 +43,7 @@ end
 action :create do
   key =
     if new_resource.key
-      hoststr = new_resource.port ? "[#{new_resource.host}]:#{new_resource.port}" : new_resource.host
+      hoststr = (new_resource.port != 22) ? "[#{new_resource.host}]:#{new_resource.port}" : new_resource.host
       "#{hoststr} #{type_string(new_resource.key_type)} #{new_resource.key}"
     else
       keyscan = shell_out!("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}", timeout: new_resource.timeout)
