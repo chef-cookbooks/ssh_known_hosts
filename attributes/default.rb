@@ -18,4 +18,6 @@
 #
 
 default['ssh_known_hosts']['file'] = '/etc/ssh/ssh_known_hosts'
-default['ssh_known_hosts']['key_type'] = 'rsa,dsa'
+default['ssh_known_hosts']['key_types'] = %w(ed25519 ecdsa rsa dsa)
+default['ssh_known_hosts']['first_key_only'] = false
+

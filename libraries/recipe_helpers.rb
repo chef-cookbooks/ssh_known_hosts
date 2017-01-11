@@ -41,13 +41,16 @@ module SshknownhostsRecipeHelpers
   # injests from the same format as the partial search query above or
   # else a similarly formatted data bag or whatever
   def ssh_known_hosts_entries_from_node_data(hosts)
-    hosts = hosts.map do |host|
-      {
-        'fqdn' => fqdn_from_node(host),
-        'key' => key_from_node(host),
-        'key_type' => key_type_from_node(host),
-      }
+    hosts = hosts.flat_map do |host|
+      key_types_from_node(host).map do |key_type|
+        {
+          'fqdn' => fqdn_from_node(host),
+          'key' => host[key_type],
+          'key_type' => key_type
+        }
+      end
     end
+
     ssh_known_hosts_entries hosts
   end
 
@@ -78,15 +81,14 @@ module SshknownhostsRecipeHelpers
     node['fqdn'] || node['ipaddress'] || node['hostname']
   end
 
-  def key_from_node(node)
-    node['ed25519'] || node['ecdsa'] || node['rsa'] || node['dsa']
-  end
+  def key_types_from_node(data)
+    present_keys = node['ssh_known_hosts']['key_types'].reject { |type| data[type].nil? }
 
-  def key_type_from_node(node)
-    %w(ed25519 ecdsa rsa dsa).each do |type|
-      return type if node[type]
+    if node['ssh_known_hosts']['first_key_only']
+      [present_keys.first]
+    else
+      present_keys
     end
-    nil
   end
 end
 
