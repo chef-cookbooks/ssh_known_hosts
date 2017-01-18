@@ -8,5 +8,4 @@ end
 
 group :integration do
   cookbook 'yum'
-  cookbook 'minitest-handler'
 end
