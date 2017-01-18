@@ -10,6 +10,6 @@ recipe            'ssh_known_hosts', 'Provides an LWRP for managing SSH known ho
 source_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 issues_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 
-chef_version '>= 12.1'
+chef_version '>= 12.1' if respond_to?(:chef_version)
 
-depends 'compat_resource'
+depends 'compat_resource', '>= 12.16.3'
