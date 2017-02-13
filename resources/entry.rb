@@ -27,6 +27,7 @@ attribute :timeout, kind_of: Integer, default: 30
 attribute :mode, kind_of: String, default: '0644'
 attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
+attribute :hash_entries, equal_to: [true, false], default: false
 
 action_class do
   def type_string(key_type)
@@ -46,7 +47,10 @@ action :create do
       hoststr = (new_resource.port != 22) ? "[#{new_resource.host}]:#{new_resource.port}" : new_resource.host
       "#{hoststr} #{type_string(new_resource.key_type)} #{new_resource.key}"
     else
-      keyscan = shell_out!("ssh-keyscan -t#{node['ssh_known_hosts']['key_type']} -p #{new_resource.port} #{new_resource.host}", timeout: new_resource.timeout)
+      keyscan_cmd = ['ssh-keyscan', "-t#{node['ssh_known_hosts']['key_type']}", "-p #{new_resource.port}"]
+      keyscan_cmd << '-H' if new_resource.hash_entries
+      keyscan_cmd << new_resource.host
+      keyscan = shell_out!(keyscan_cmd.join(' '), timeout: new_resource.timeout)
       keyscan.stdout
     end
 
