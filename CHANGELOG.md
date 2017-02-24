@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 5.0.0 (2017-02-23)
+
+- Require Chef 12.5+ and remove compat_resource dependency
+
 ## 4.1.1 (2017-01-06)
 
 - Do not write port number if it is 22
