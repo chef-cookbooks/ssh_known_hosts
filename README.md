@@ -18,7 +18,7 @@ Should work on any operating system that supports `/etc/ssh/ssh_known_hosts`.
 
 ### Chef
 
-As of version 3.0.0 this cookbook is Chef 12.1+ as we have eliminated the use of the now deprecated partial_search cookbook. [Filtered search](https://docs.chef.io/chef_search.html) is included as of chef-client 12.0.
+- 12.5+
 
 ## Usage
 
