@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 5.1.0 (2017-03-14)
+
+- add support for hashed entries when using keyscan
+- Test with Local Delivery instead of Rake
+- add a "deprecated" recipe for back-compat-ish behavior
+
 ## 5.0.0 (2017-02-23)
 
 - Require Chef 12.5+ and remove compat_resource dependency
