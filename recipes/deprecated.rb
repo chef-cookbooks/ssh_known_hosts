@@ -2,7 +2,7 @@ include_recipe "::default"
 
 # read in all the old information
 lines = ::File.readlines(node['ssh_known_hosts']['file'])
-hosts = lines.map(&:chmop).reject(&:empty).map do |line|
+hosts = lines.map(&:chomp).reject(&:empty?).map do |line|
   fields = line.split(/\s+/)
   {
     "fqdn" => fields[0],
