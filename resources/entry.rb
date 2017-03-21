@@ -29,7 +29,7 @@ attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
 attribute :hash_entries, equal_to: [true, false], default: false
 
-action_class do
+action_class.class_eval do
   def type_string(key_type)
     type_map = {
       'rsa' => 'ssh-rsa',
@@ -87,7 +87,7 @@ action :create do
   end
 end
 
-action_class do
+action_class.class_eval do
   def key_exists?(keys, key, comment)
     keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
