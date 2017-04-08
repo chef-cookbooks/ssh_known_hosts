@@ -7,6 +7,10 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version           '5.1.0'
 recipe            'ssh_known_hosts', 'Provides an LWRP for managing SSH known hosts. Also includes a recipe for automatically adding all nodes to the SSH known hosts.'
 
+%w(ubuntu debian redhat centos suse opensuse opensuseleap scientific oracle amazon zlinux).each do |os|
+    supports os
+end
+
 source_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 issues_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
 chef_version '>= 12.5' if respond_to?(:chef_version)
