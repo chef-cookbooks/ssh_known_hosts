@@ -29,7 +29,7 @@ attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
 attribute :hash_entries, equal_to: [true, false], default: false
 
-action_class.class_eval do
+action_class do
   def type_string(key_type)
     type_map = {
       'rsa' => 'ssh-rsa',
