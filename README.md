@@ -45,6 +45,17 @@ ssh_known_hosts_entry 'github.com' do
 end
 ```
 
+The latest design of this cookbook only writes the `/etc/ssh/ssh_known_hosts` file at the very end of the chef-client run.  In order to force it to update the template earlier use the :flush action:
+
+```ruby
+ssh_known_hosts_entry "doesn't matter" do
+  action :flush
+end
+```
+
+The user is responsible for only calling the flush action at the end of constructing their entries.  Calling it first is illegal, calling it in the middle will result with partial content written to disk
+and chef-client will always show at least two resources being updated (and flapping).
+
 ### Cacher
 
 Use the `cacher` recipe on a single "worker" node somewhere in your cluster to maintain a data bag (`server_data/known_hosts` by default) containing all of your nodes host keys. The advantage to this approach is that is much faster than running a search of all nodes, and substantially lightens the load on locally hosted Chef servers. The drawback is that the data is slightly delayed (because the cacher worker must converge first).
