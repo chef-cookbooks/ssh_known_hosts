@@ -29,16 +29,14 @@ attribute :owner, kind_of: String, default: 'root'
 attribute :group, kind_of: String, default: 'root'
 attribute :hash_entries, equal_to: [true, false], default: false
 
-action_class.class_eval do
-  def type_string(key_type)
-    type_map = {
-      'rsa' => 'ssh-rsa',
-      'dsa' => 'ssh-dss',
-      'ecdsa' => 'ecdsa-sha2-nistp256',
-      'ed25519' => 'ssh-ed25519',
-    }
-    type_map[key_type] || key_type
-  end
+def type_string(key_type)
+  type_map = {
+    'rsa' => 'ssh-rsa',
+    'dsa' => 'ssh-dss',
+    'ecdsa' => 'ecdsa-sha2-nistp256',
+    'ed25519' => 'ssh-ed25519',
+  }
+  type_map[key_type] || key_type
 end
 
 action :create do
@@ -87,10 +85,8 @@ action :create do
   end
 end
 
-action_class.class_eval do
-  def key_exists?(keys, key, comment)
-    keys.any? do |line|
-      line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
-    end
+def key_exists?(keys, key, comment)
+  keys.any? do |line|
+    line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
   end
 end
