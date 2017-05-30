@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 5.2.1 (2017-05-30)
+
+- Resolve foodcritic warnings
+
 ## 5.2.0 (2017-05-30)
 
 - Update apache2 license string
