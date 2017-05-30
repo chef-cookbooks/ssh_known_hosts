@@ -18,7 +18,7 @@ Should work on any operating system that supports `/etc/ssh/ssh_known_hosts`.
 
 ### Chef
 
-- 12.5+
+- 12.7+
 
 ## Usage
 
