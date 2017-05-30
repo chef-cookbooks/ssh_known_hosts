@@ -16,30 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-actions :create
-default_action :create
-
-attribute :host, kind_of: String, name_attribute: true
-attribute :key, kind_of: String
-attribute :key_type, kind_of: String, default: 'rsa'
-attribute :port, kind_of: Integer, default: 22
-attribute :timeout, kind_of: Integer, default: 30
-attribute :mode, kind_of: String, default: '0644'
-attribute :owner, kind_of: String, default: 'root'
-attribute :group, kind_of: String, default: 'root'
-attribute :hash_entries, equal_to: [true, false], default: false
-
-action_class do
-  def type_string(key_type)
-    type_map = {
-      'rsa' => 'ssh-rsa',
-      'dsa' => 'ssh-dss',
-      'ecdsa' => 'ecdsa-sha2-nistp256',
-      'ed25519' => 'ssh-ed25519',
-    }
-    type_map[key_type] || key_type
-  end
-end
+property :host, kind_of: String, name_property: true
+property :key, kind_of: String
+property :key_type, kind_of: String, default: 'rsa'
+property :port, kind_of: Integer, default: 22
+property :timeout, kind_of: Integer, default: 30
+property :mode, kind_of: String, default: '0644'
+property :owner, kind_of: String, default: 'root'
+property :group, kind_of: String, default: 'root'
+property :hash_entries, equal_to: [true, false], default: false
 
 action :create do
   key =
@@ -92,5 +77,15 @@ action_class do
     keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
+  end
+
+  def type_string(key_type)
+    type_map = {
+      'rsa' => 'ssh-rsa',
+      'dsa' => 'ssh-dss',
+      'ecdsa' => 'ecdsa-sha2-nistp256',
+      'ed25519' => 'ssh-ed25519',
+    }
+    type_map[key_type] || key_type
   end
 end
