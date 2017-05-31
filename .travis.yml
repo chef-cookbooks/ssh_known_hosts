@@ -24,7 +24,6 @@ env:
   - INSTANCE=default-centos-6
   - INSTANCE=default-centos-7
   - INSTANCE=default-opensuse-leap
-  - INSTANCE=default-fedora-latest
   - INSTANCE=cacher-client-ubuntu-1404
   - INSTANCE=cacher-client-centos-6
   - INSTANCE=cacher-client-centos-7
