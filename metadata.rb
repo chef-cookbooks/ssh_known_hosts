@@ -8,7 +8,7 @@ version           '5.2.1'
 recipe            'ssh_known_hosts', 'Provides an LWRP for managing SSH known hosts. Also includes a recipe for automatically adding all nodes to the SSH known hosts.'
 
 %w(ubuntu debian redhat centos suse opensuse opensuseleap scientific oracle amazon zlinux).each do |os|
-    supports os
+  supports os
 end
 
 source_url 'https://github.com/chef-cookbooks/ssh_known_hosts'
