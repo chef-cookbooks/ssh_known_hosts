@@ -16,14 +16,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-property :host, kind_of: String, name_property: true
-property :key, kind_of: String
-property :key_type, kind_of: String, default: 'rsa'
-property :port, kind_of: Integer, default: 22
-property :timeout, kind_of: Integer, default: 30
-property :mode, kind_of: String, default: '0644'
-property :owner, kind_of: String, default: 'root'
-property :group, kind_of: String, default: 'root'
+property :host, String, name_property: true
+property :key, String
+property :key_type, String, default: 'rsa'
+property :port, Integer, default: 22
+property :timeout, Integer, default: 30
+property :mode, String, default: '0644'
+property :owner, String, default: 'root'
+property :group, String, default: 'root'
 property :hash_entries, equal_to: [true, false], default: false
 
 action :create do
