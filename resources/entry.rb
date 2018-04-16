@@ -72,6 +72,18 @@ action :create do
   end
 end
 
+# all this does is send an immediate run_action(:create) to the template resource
+action :flush do
+  with_run_context :root do
+    # if you haven't ever called ssh_known_hosts_entry before you're definitely doing it wrong so we blow up hard.
+    find_resource!(:template, 'update ssh known hosts file').run_action(:create)
+    # it is the user's responsibility to only call this *after* all the ssh_known_hosts_entry resources have been called.
+    # if you call this too early in your run_list you will get a partial known_host file written to disk, and the resource
+    # behavior will not be idempotent (template resources will flap and never show 0 resources updated on converged boxes).
+    Chef::Log.warn 'flushed ssh_known_hosts entries to file, later ssh_known_hosts_entry resources will not have been written'
+  end
+end
+
 action_class do
   def key_exists?(keys, key, comment)
     keys.any? do |line|
