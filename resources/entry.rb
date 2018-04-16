@@ -25,6 +25,7 @@ property :mode, String, default: '0644'
 property :owner, String, default: 'root'
 property :group, String, default: 'root'
 property :hash_entries, [true, false], default: false
+property :file_location, String, default: '/etc/ssh/ssh_known_hosts'
 
 action :create do
   key =
@@ -46,7 +47,7 @@ action :create do
   r = with_run_context :root do
     find_resource(:template, 'update ssh known hosts file') do
       source 'ssh_known_hosts.erb'
-      path node['ssh_known_hosts']['file']
+      path new_resource.file_location
       owner new_resource.owner
       group new_resource.group
       mode new_resource.mode
