@@ -18,7 +18,7 @@ You can also optionally put other host keys in a data bag called "`ssh_known_hos
 
 ### Chef
 
-- 12.7+
+- 12.11+
 
 ## Resource
 
