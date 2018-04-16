@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/chef-cookbooks/ssh_known_hosts.svg?branch=master)](http://travis-ci.org/chef-cookbooks/ssh_known_hosts) [![Cookbook Version](https://img.shields.io/cookbook/v/ssh_known_hosts.svg)](https://supermarket.chef.io/cookbooks/ssh_known_hosts)
 
-The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file, the global file for public keys on known hosts.
+The Chef `ssh_known_hosts` cookbook exposes a resource as well as a recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file, the global file for public keys on known hosts.
 
 - The default recipe builds `/etc/ssh/ssh_known_hosts` based either on search indexes using `rsa,dsa` key types and ohai data **or**, when `['ssh_known_hosts']['use_data_bag_cache']` is `true`, on the contents of a data bag that is maintained by the `cacher` recipe running on a worker node.
 - The cacher recipe builds and maintains a data bag based on search indexes using `rsa,dsa` key types and ohai data.
-- The LWRP provides a way to add custom entries in your own recipes.
+- The resource provides a way to add custom entries in your own recipes.
 
 You can also optionally put other host keys in a data bag called "`ssh_known_hosts`". See below for details.
 
@@ -14,17 +14,17 @@ You can also optionally put other host keys in a data bag called "`ssh_known_hos
 
 ### Platforms
 
-Should work on any operating system that supports `/etc/ssh/ssh_known_hosts`.
+- Any operating system that supports `/etc/ssh/ssh_known_hosts`.
 
 ### Chef
 
 - 12.7+
 
-## Usage
+## Resource
 
-## Resources
+### ssh_known_hosts_entry
 
-Use the LWRP `ssh_known_hosts_entry` to append an entry for the specified host in `/etc/ssh/ssh_known_hosts`. For example:
+Use the `ssh_known_hosts_entry` resource to append an entry for the specified host in `/etc/ssh/ssh_known_hosts`. For example:
 
 ```ruby
 ssh_known_hosts_entry 'github.com'
@@ -45,7 +45,7 @@ ssh_known_hosts_entry 'github.com' do
 end
 ```
 
-The latest design of this cookbook only writes the `/etc/ssh/ssh_known_hosts` file at the very end of the chef-client run.  In order to force it to update the template earlier use the :flush action:
+The latest design of this cookbook only writes the `/etc/ssh/ssh_known_hosts` file at the very end of the chef-client run. In order to force it to update the template earlier use the :flush action:
 
 ```ruby
 ssh_known_hosts_entry "doesn't matter" do
@@ -53,8 +53,9 @@ ssh_known_hosts_entry "doesn't matter" do
 end
 ```
 
-The user is responsible for only calling the flush action at the end of constructing their entries.  Calling it first is illegal, calling it in the middle will result with partial content written to disk
-and chef-client will always show at least two resources being updated (and flapping).
+The user is responsible for only calling the flush action at the end of constructing their entries. Calling it first is illegal, calling it in the middle will result with partial content written to disk and chef-client will always show at least two resources being updated (and flapping).
+
+## Recipes
 
 ### Cacher
 
@@ -71,7 +72,7 @@ The following attributes are set on a per-platform basis, see the `attributes/de
 - `node['ssh_known_hosts']['use_data_bag_cache']` - Use the data bag maintained by the cacher server to build `/etc/ssh/ssh_known_hosts` instead of a direct search (requires that a node be set up to run the cacher recipe regularly).
 - `node['ssh_known_hosts']['cacher']['data_bag']`/`node['ssh_known_hosts']['cacher']['data_bag_item']` - Data bag where cacher recipe should store its keys.
 
-#### LWRP Attributes
+#### Resource Properties
 
 Attribute | Description                                                                  | Example     | Default
 --------- | ---------------------------------------------------------------------------- | ----------- | ----------------------
@@ -110,22 +111,11 @@ ipaddress | the ipaddress of the node (if fqdn is not supplied) | 1.1.1.1
 hostname  | local hostname of the server (if not a fqdn)        | myserver.local
 dsa       | the dsa key for this server                         | ssh-dsa ABAAC3...
 
-### ChefSpec matchers
-
-A custom matcher is available for you to use in recipe tests.
-
-```
-describe 'my_cookbook::my_recipe' do
-    let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-    it { expect(chef_run).to append_to_ssh_known_hosts 'github.com' }
-end
-```
-
 ## License & Authors
 
 **Author:** Cookbook Engineering Team ([cookbooks@chef.io](mailto:cookbooks@chef.io))
 
-**Copyright:** 2008-2016, Chef Software, Inc.
+**Copyright:** 2008-2018, Chef Software, Inc.
 
 ```
 Licensed under the Apache License, Version 2.0 (the "License");
