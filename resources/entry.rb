@@ -44,10 +44,6 @@ action :create do
   comment = key.split("\n").first || ''
 
   r = with_run_context :root do
-    # XXX: remove log resource once delayed_actions lands in compat_resource
-    find_resource(:log, 'force delayed notification') do
-      notifies :create, 'template[update ssh known hosts file]', :delayed
-    end
     find_resource(:template, 'update ssh known hosts file') do
       source 'ssh_known_hosts.erb'
       path node['ssh_known_hosts']['file']
@@ -55,6 +51,7 @@ action :create do
       group new_resource.group
       mode new_resource.mode
       action :nothing
+      delayed_action :create
       backup false
       variables(entries: [])
     end
