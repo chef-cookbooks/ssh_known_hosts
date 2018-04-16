@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 6.0.0 (2018-04-16)
+
+- add a :flush action to ssh_known_hosts_entry which immediatly writes the file to disk. See the readme for an example of how to use this
+- Remove action_class.class_eval and just use action_class instead
+- Increase the required Chef release to 12.11 for some of the accumulator functionality we use now
+- Improve testing
+- Improve the docs for the resource
+
 ## 5.2.1 (2017-05-30)
 
 - Resolve foodcritic warnings
