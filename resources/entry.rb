@@ -33,7 +33,7 @@ action :create do
       hoststr = (new_resource.port != 22) ? "[#{new_resource.host}]:#{new_resource.port}" : new_resource.host
       "#{hoststr} #{type_string(new_resource.key_type)} #{new_resource.key}"
     else
-      keyscan_cmd = ['ssh-keyscan', "-t#{node['ssh_known_hosts']['key_type']}", "-p #{new_resource.port}"]
+      keyscan_cmd = ['ssh-keyscan', "-t#{new_resource.key_type}", "-p #{new_resource.port}"]
       keyscan_cmd << '-H' if new_resource.hash_entries
       keyscan_cmd << new_resource.host
       keyscan = shell_out!(keyscan_cmd.join(' '), timeout: new_resource.timeout)
@@ -45,7 +45,7 @@ action :create do
   comment = key.split("\n").first || ''
 
   r = with_run_context :root do
-    find_resource(:template, 'update ssh known hosts file') do
+    find_resource(:template, "update ssh known hosts file #{new_resource.file_location}") do
       source 'ssh_known_hosts.erb'
       path new_resource.file_location
       owner new_resource.owner
@@ -74,7 +74,7 @@ end
 action :flush do
   with_run_context :root do
     # if you haven't ever called ssh_known_hosts_entry before you're definitely doing it wrong so we blow up hard.
-    find_resource!(:template, 'update ssh known hosts file').run_action(:create)
+    find_resource!(:template, "update ssh known hosts file #{new_resource.file_location}").run_action(:create)
     # it is the user's responsibility to only call this *after* all the ssh_known_hosts_entry resources have been called.
     # if you call this too early in your run_list you will get a partial known_host file written to disk, and the resource
     # behavior will not be idempotent (template resources will flap and never show 0 resources updated on converged boxes).
