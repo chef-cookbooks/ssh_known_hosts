@@ -33,15 +33,16 @@ Use the `ssh_known_hosts_entry` resource to append an entry for the specified ho
 
 #### Properties
 
-Property | Description                                                                  | Example     | Default
--------- | ---------------------------------------------------------------------------- | ----------- | ----------------------
-host     | the host to add                                                              | github.com  |
-key      | (optional) provide your own key                                              | ssh-rsa ... | ssh-keyscan -H #{host}
-port     | (optional) the server port that ssh-keyscan will use to gater the public key | 2222        | 22
-timeout  | (optional) limit the length of time ssh-keyscan will run for (seconds)       | 90          | 30
-mode     | (optional) set the mode explicitly on the /etc/ssh/ssh_known_hosts file      | '0644'      | '0644'
-owner    | (optional) set the owner explicitly on the /etc/ssh/ssh_known_hosts file     | 'root'      | 'root'
-group    | (optional) set the group explicitly on the /etc/ssh/ssh_known_hosts file     | 'wheel'     | 'root'
+Property      | Description                                                                                                     | Example                    | Default
+------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------- | ----------------------
+host          | the host to add                                                                                                 | github.com                 | the resource name
+key           | (optional) provide your own key                                                                                 | ssh-rsa ...                | ssh-keyscan -H #{host}
+port          | (optional) the server port that ssh-keyscan will use to gater the public key                                    | 2222                       | 22
+timeout       | (optional) limit the length of time ssh-keyscan will run for (seconds)                                          | 90                         | 30
+mode          | (optional) set the mode explicitly on the /etc/ssh/ssh_known_hosts file                                         | '0644'                     | '0644'
+owner         | (optional) set the owner explicitly on the /etc/ssh/ssh_known_hosts file                                        | 'root'                     | 'root'
+group         | (optional) set the group explicitly on the /etc/ssh/ssh_known_hosts file                                        | 'wheel'                    | 'root'
+file_location | (optional) the location of the ssh known hosts file. Change this to set a known host file for a particular user | '/etc/ssh/ssh_known_hosts'
 
 #### Examples
 
