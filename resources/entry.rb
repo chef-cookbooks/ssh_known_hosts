@@ -24,7 +24,7 @@ property :timeout, Integer, default: 30
 property :mode, String, default: '0644'
 property :owner, String, default: 'root'
 property :group, String, default: 'root'
-property :hash_entries, equal_to: [true, false], default: false
+property :hash_entries, [true, false], default: false
 
 action :create do
   key =
