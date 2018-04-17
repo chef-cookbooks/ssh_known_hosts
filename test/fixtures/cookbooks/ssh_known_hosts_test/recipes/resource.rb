@@ -24,7 +24,6 @@ ssh_known_hosts_entry 'github.com' do
   mode '0600'
 end
 
-
 # don't do this in production as ssh_known_hosts needs to be world readable
 ssh_known_hosts_entry 'github.com for current user' do
   host 'github.com'
