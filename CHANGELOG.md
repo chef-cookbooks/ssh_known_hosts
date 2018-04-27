@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 6.1.1 (2018-04-27)
+
+- Document a few missing properties in the resource
+
 ## 6.1.0 (2018-04-16)
 
 - Use delayed_action instead of a log resource with notification. This makes the resource runs a bit cleaner as you won't see a log resource converging as well
