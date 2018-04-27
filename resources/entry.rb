@@ -3,6 +3,7 @@
 # Resource:: entry
 #
 # Copyright:: 2013-2016, Seth Vargo
+# Copyright:: 2017-2018, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +24,7 @@ property :port, Integer, default: 22
 property :timeout, Integer, default: 30
 property :mode, String, default: '0644'
 property :owner, String, default: 'root'
-property :group, String, default: 'root'
+property :group, String, default: lazy { node['root_group'] }
 property :hash_entries, [true, false], default: false
 property :file_location, String, default: '/etc/ssh/ssh_known_hosts'
 
