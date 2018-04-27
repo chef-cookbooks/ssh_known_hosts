@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 6.1.2 (2018-04-27)
+
+- Use root_group for the group ownership to support macOS and BSD
+
 ## 6.1.1 (2018-04-27)
 
 - Document a few missing properties in the resource
