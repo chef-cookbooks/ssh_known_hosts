@@ -35,7 +35,9 @@ if node['ssh_known_hosts']['use_data_bag_cache']
   ssh_known_hosts_entries hosts
 else
   # FIXME: should change the syntax here, but chef-zero's search parser is broken
-  ssh_known_hosts_from_node_search("keys_ssh:* NOT name:#{node.name}")
+  node_query = "keys_ssh:* (NOT name:#{node.name})"
+  node_query << " #{node['ssh_known_hosts']['node_search_query']}" unless node['ssh_known_hosts']['node_search_query'].empty?
+  ssh_known_hosts_from_node_search(node_query)
 end
 
 ssh_known_hosts_from_data_bag('ssh_known_hosts')
