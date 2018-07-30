@@ -3,6 +3,7 @@
 # Resource:: entry
 #
 # Copyright:: 2013-2016, Seth Vargo
+# Copyright:: 2017-2018, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,30 +17,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-actions :create
-default_action :create
-
-attribute :host, kind_of: String, name_attribute: true
-attribute :key, kind_of: String
-attribute :key_type, kind_of: String, default: 'rsa'
-attribute :port, kind_of: Integer, default: 22
-attribute :timeout, kind_of: Integer, default: 30
-attribute :mode, kind_of: String, default: '0644'
-attribute :owner, kind_of: String, default: 'root'
-attribute :group, kind_of: String, default: 'root'
-attribute :hash_entries, equal_to: [true, false], default: false
-
-action_class.class_eval do
-  def type_string(key_type)
-    type_map = {
-      'rsa' => 'ssh-rsa',
-      'dsa' => 'ssh-dss',
-      'ecdsa' => 'ecdsa-sha2-nistp256',
-      'ed25519' => 'ssh-ed25519',
-    }
-    type_map[key_type] || key_type
-  end
-end
+property :host, String, name_property: true
+property :key, String
+property :key_type, String, default: 'rsa'
+property :port, Integer, default: 22
+property :timeout, Integer, default: 30
+property :mode, String, default: '0644'
+property :owner, String, default: 'root'
+property :group, String, default: lazy { node['root_group'] }
+property :hash_entries, [true, false], default: false
+property :file_location, String, default: '/etc/ssh/ssh_known_hosts'
 
 action :create do
   key =
@@ -47,7 +34,7 @@ action :create do
       hoststr = (new_resource.port != 22) ? "[#{new_resource.host}]:#{new_resource.port}" : new_resource.host
       "#{hoststr} #{type_string(new_resource.key_type)} #{new_resource.key}"
     else
-      keyscan_cmd = ['ssh-keyscan', "-t#{node['ssh_known_hosts']['key_type']}", "-p #{new_resource.port}"]
+      keyscan_cmd = ['ssh-keyscan', "-t#{new_resource.key_type}", "-p #{new_resource.port}"]
       keyscan_cmd << '-H' if new_resource.hash_entries
       keyscan_cmd << new_resource.host
       keyscan = shell_out!(keyscan_cmd.join(' '), timeout: new_resource.timeout)
@@ -59,17 +46,14 @@ action :create do
   comment = key.split("\n").first || ''
 
   r = with_run_context :root do
-    # XXX: remove log resource once delayed_actions lands in compat_resource
-    find_resource(:log, 'force delayed notification') do
-      notifies :create, 'template[update ssh known hosts file]', :delayed
-    end
-    find_resource(:template, 'update ssh known hosts file') do
+    find_resource(:template, "update ssh known hosts file #{new_resource.file_location}") do
       source 'ssh_known_hosts.erb'
-      path node['ssh_known_hosts']['file']
+      path new_resource.file_location
       owner new_resource.owner
       group new_resource.group
       mode new_resource.mode
       action :nothing
+      delayed_action :create
       backup false
       variables(entries: [])
     end
@@ -87,10 +71,32 @@ action :create do
   end
 end
 
-action_class.class_eval do
+# all this does is send an immediate run_action(:create) to the template resource
+action :flush do
+  with_run_context :root do
+    # if you haven't ever called ssh_known_hosts_entry before you're definitely doing it wrong so we blow up hard.
+    find_resource!(:template, "update ssh known hosts file #{new_resource.file_location}").run_action(:create)
+    # it is the user's responsibility to only call this *after* all the ssh_known_hosts_entry resources have been called.
+    # if you call this too early in your run_list you will get a partial known_host file written to disk, and the resource
+    # behavior will not be idempotent (template resources will flap and never show 0 resources updated on converged boxes).
+    Chef::Log.warn 'flushed ssh_known_hosts entries to file, later ssh_known_hosts_entry resources will not have been written'
+  end
+end
+
+action_class do
   def key_exists?(keys, key, comment)
     keys.any? do |line|
       line.match(/#{Regexp.escape(comment)}|#{Regexp.escape(key)}/)
     end
+  end
+
+  def type_string(key_type)
+    type_map = {
+      'rsa' => 'ssh-rsa',
+      'dsa' => 'ssh-dss',
+      'ecdsa' => 'ecdsa-sha2-nistp256',
+      'ed25519' => 'ssh-ed25519',
+    }
+    type_map[key_type] || key_type
   end
 end

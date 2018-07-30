@@ -9,20 +9,27 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos-6.8
-  - name: centos-7.3
-  - name: debian-7.11
-  - name: debian-8.6
-  - name: fedora-25
-  - name: opensuse-leap-42.2
+  - name: centos-6
+  - name: centos-7
+  - name: debian-8
+  - name: debian-9
+  - name: fedora-28
+  - name: opensuse-leap-42
   - name: ubuntu-14.04
   - name: ubuntu-16.04
+  - name: ubuntu-18.04
 
 suites:
 - name: default
   run_list:
   - recipe[ssh_known_hosts_test]
   attributes: {}
+- name: default-query
+  run_list:
+  - recipe[ssh_known_hosts_test::default]
+  attributes:
+    ssh_known_hosts:
+      node_query_search: 'AND chef_environment:stage'
 - name: cacher
   run_list:
   - recipe[ssh_known_hosts_test::cacher]
@@ -33,6 +40,6 @@ suites:
   attributes:
     ssh_known_hosts:
       use_data_bag_cache: true
-- name: known_hosts_test
+- name: resource
   run_list:
-  - recipe[ssh_known_hosts_test::custom]
+  - recipe[ssh_known_hosts_test::resource]

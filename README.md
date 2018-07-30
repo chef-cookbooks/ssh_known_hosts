@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/chef-cookbooks/ssh_known_hosts.svg?branch=master)](http://travis-ci.org/chef-cookbooks/ssh_known_hosts) [![Cookbook Version](https://img.shields.io/cookbook/v/ssh_known_hosts.svg)](https://supermarket.chef.io/cookbooks/ssh_known_hosts)
 
-The Chef `ssh_known_hosts` cookbook exposes resource and default recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file, the global file for public keys on known hosts.
+The Chef `ssh_known_hosts` cookbook exposes a resource as well as a recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file, the global file for public keys on known hosts.
 
 - The default recipe builds `/etc/ssh/ssh_known_hosts` based either on search indexes using `rsa,dsa` key types and ohai data **or**, when `['ssh_known_hosts']['use_data_bag_cache']` is `true`, on the contents of a data bag that is maintained by the `cacher` recipe running on a worker node.
 - The cacher recipe builds and maintains a data bag based on search indexes using `rsa,dsa` key types and ohai data.
-- The LWRP provides a way to add custom entries in your own recipes.
+- The resource provides a way to add custom entries in your own recipes.
 
 You can also optionally put other host keys in a data bag called "`ssh_known_hosts`". See below for details.
 
@@ -14,17 +14,41 @@ You can also optionally put other host keys in a data bag called "`ssh_known_hos
 
 ### Platforms
 
-Should work on any operating system that supports `/etc/ssh/ssh_known_hosts`.
+- Any operating system that supports `/etc/ssh/ssh_known_hosts`.
 
 ### Chef
 
-- 12.5+
+- 12.11+
 
-## Usage
+## Resource
 
-## Resources
+### ssh_known_hosts_entry
 
-Use the LWRP `ssh_known_hosts_entry` to append an entry for the specified host in `/etc/ssh/ssh_known_hosts`. For example:
+Use the `ssh_known_hosts_entry` resource to append an entry for the specified host in `/etc/ssh/ssh_known_hosts`. For example:
+
+#### Actions
+
+- `:create` - Create an entry (default)
+- `:flush` - Immediately flush the entries to the config file (see example below)
+
+#### Properties
+
+Property      | Description                                                                                                      | Example                          | Default
+------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------
+host          | The host to add to the known hosts file.                                                                         | 'github.com'                     | the resource name
+key           | (optional) The key for the host. If not provided this will be automatically determined.                          | ssh-rsa ...                      | ssh-keyscan -H #{host}
+key_type      | (optional) The type of key to store.                                                                             | 'dsa'                            | rsa
+port          | (optional) The server port that ssh-keyscan will use to gather the public key.                                   | 2222                             | 22
+timeout       | (optional) The timeout in seconds for ssh-keyscan.                                                               | 90                               | 30
+mode          | (optional) The file mode for the ssh_known_hosts file.                                                           | '0644'                           | '0644'
+owner         | (optional) The file owner for the ssh_known_hosts file.                                                          | 'root'                           | 'root'
+group         | (optional) The file group for the ssh_known_hosts file.                                                          | 'wheel'                          | 'root'
+hash_entries  | (optional) Hash the hostname and addresses in the ssh_known_hosts file for privacy.                              | true                             | false
+file_location | (optional) The location of the ssh known hosts file. Change this to set a known host file for a particular user. | '/Users/tsmith/.ssh/known_hosts' | '/etc/ssh/ssh_known_hosts'
+
+#### Examples
+
+Add a single entry for github.com:
 
 ```ruby
 ssh_known_hosts_entry 'github.com'
@@ -45,32 +69,23 @@ ssh_known_hosts_entry 'github.com' do
 end
 ```
 
+The latest design of this cookbook only writes the `/etc/ssh/ssh_known_hosts` file at the very end of the chef-client run. In order to force it to update the template earlier use the `:flush` action:
+
+```ruby
+ssh_known_hosts_entry "doesn't matter" do
+  action :flush
+end
+```
+
+The user is responsible for only calling the flush action at the end of constructing their entries. Calling it first is illegal, calling it in the middle will result with partial content written to disk and chef-client will always show at least two resources being updated (and flapping).
+
+## Recipes
+
 ### Cacher
 
 Use the `cacher` recipe on a single "worker" node somewhere in your cluster to maintain a data bag (`server_data/known_hosts` by default) containing all of your nodes host keys. The advantage to this approach is that is much faster than running a search of all nodes, and substantially lightens the load on locally hosted Chef servers. The drawback is that the data is slightly delayed (because the cacher worker must converge first).
 
 To use the cacher, simply include the `ssh_known_hosts::cacher` cookbook in a wrapper cookbook or run list on a designated worker node.
-
-#### Attributes
-
-The following attributes are set on a per-platform basis, see the `attributes/default.rb`.
-
-- `node['ssh_known_hosts']['file']` - Sets up the location of the ssh_known_hosts file for the system. Defaults to '/etc/ssh/ssh_known_hosts'
-- `node['ssh_known_hosts']['key_type']` - Determines which key type ssh-keyscan will use to determine the host key, different systems will have different available key types, check your manpage for available key types for ssh-keyscan. Defaults to 'rsa,dsa'
-- `node['ssh_known_hosts']['use_data_bag_cache']` - Use the data bag maintained by the cacher server to build `/etc/ssh/ssh_known_hosts` instead of a direct search (requires that a node be set up to run the cacher recipe regularly).
-- `node['ssh_known_hosts']['cacher']['data_bag']`/`node['ssh_known_hosts']['cacher']['data_bag_item']` - Data bag where cacher recipe should store its keys.
-
-#### LWRP Attributes
-
-Attribute | Description                                                                  | Example     | Default
---------- | ---------------------------------------------------------------------------- | ----------- | ----------------------
-host      | the host to add                                                              | github.com  |
-key       | (optional) provide your own key                                              | ssh-rsa ... | ssh-keyscan -H #{host}
-port      | (optional) the server port that ssh-keyscan will use to gater the public key | 2222        | 22
-timeout   | (optional) limit the length of time ssh-keyscan will run for (seconds)       | 90          | 30
-mode      | (optional) set the mode explicitly on the /etc/ssh/ssh_known_hosts file      | '0644'      | '0644'
-owner     | (optional) set the owner explicitly on the /etc/ssh/ssh_known_hosts file     | 'root'      | 'root'
-group     | (optional) set the group explicitly on the /etc/ssh/ssh_known_hosts file     | 'wheel'     | 'root'
 
 ### Default Recipe
 
@@ -78,7 +93,7 @@ Searches the Chef Server for all hosts that have SSH host keys using `rsa,dsa` k
 
 #### Adding custom host keys
 
-There are two ways to add custom host keys. You can either use the provided LWRP (see above), or by creating a data bag called "`ssh_known_hosts`" and adding an item for each host:
+There are two ways to add custom host keys. You can either use the resource (see above), or by creating a data bag called "`ssh_known_hosts`" and adding an item for each host:
 
 ```javascript
 {
@@ -99,22 +114,21 @@ ipaddress | the ipaddress of the node (if fqdn is not supplied) | 1.1.1.1
 hostname  | local hostname of the server (if not a fqdn)        | myserver.local
 dsa       | the dsa key for this server                         | ssh-dsa ABAAC3...
 
-### ChefSpec matchers
+## Attributes
 
-A custom matcher is available for you to use in recipe tests.
+The following attributes are set on a per-platform basis, see the `attributes/default.rb`.
 
-```
-describe 'my_cookbook::my_recipe' do
-    let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-    it { expect(chef_run).to append_to_ssh_known_hosts 'github.com' }
-end
-```
+- `node['ssh_known_hosts']['file']` - Sets up the location of the ssh_known_hosts file for the system. Defaults to '/etc/ssh/ssh_known_hosts'
+- `node['ssh_known_hosts']['key_type']` - Determines which key type ssh-keyscan will use to determine the host key, different systems will have different available key types, check your manpage for available key types for ssh-keyscan. Defaults to 'rsa,dsa'
+- `node['ssh_known_hosts']['use_data_bag_cache']` - Use the data bag maintained by the cacher server to build `/etc/ssh/ssh_known_hosts` instead of a direct search (requires that a node be set up to run the cacher recipe regularly).
+- `node['ssh_known_hosts']['cacher']['data_bag']`/`node['ssh_known_hosts']['cacher']['data_bag_item']` - Data bag where cacher recipe should store its keys.
+- `node['ssh_known_hosts']['node_search_query']` - Additional query string to apply to the search
 
 ## License & Authors
 
 **Author:** Cookbook Engineering Team ([cookbooks@chef.io](mailto:cookbooks@chef.io))
 
-**Copyright:** 2008-2016, Chef Software, Inc.
+**Copyright:** 2008-2018, Chef Software, Inc.
 
 ```
 Licensed under the Apache License, Version 2.0 (the "License");

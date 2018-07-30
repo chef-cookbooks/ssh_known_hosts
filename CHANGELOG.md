@@ -2,6 +2,38 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 6.1.2 (2018-04-27)
+
+- Use root_group for the group ownership to support macOS and BSD
+
+## 6.1.1 (2018-04-27)
+
+- Document a few missing properties in the resource
+
+## 6.1.0 (2018-04-16)
+
+- Use delayed_action instead of a log resource with notification. This makes the resource runs a bit cleaner as you won't see a log resource converging as well
+- Add a new property `file_location` for controlling where the ssh config is. This defaults to the previously set value from the node attribute, but can be set on individual resources. This also lets you set the path to a particular user's ssh known host file if you want to modify that.
+- By default only set key type of RSA not RSA and DSA. You can modify this behavior by setting the key_type property. Previously we used the node level attribute, but this didn't allow you to change the behavior on individual resources
+
+## 6.0.0 (2018-04-16)
+
+- add a :flush action to ssh_known_hosts_entry which immediatly writes the file to disk. See the readme for an example of how to use this
+- Remove action_class.class_eval and just use action_class instead
+- Increase the required Chef release to 12.11 for some of the accumulator functionality we use now
+- Improve testing
+- Improve the docs for the resource
+
+## 5.2.1 (2017-05-30)
+
+- Resolve foodcritic warnings
+
+## 5.2.0 (2017-05-30)
+
+- Update apache2 license string
+- Add supports metadata
+- Remove class_eval usage and require Chef 12.7+
+
 ## 5.1.0 (2017-03-14)
 
 - add support for hashed entries when using keyscan
