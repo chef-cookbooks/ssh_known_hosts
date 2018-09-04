@@ -10,6 +10,8 @@ The Chef `ssh_known_hosts` cookbook exposes a resource as well as a recipe for a
 
 You can also optionally put other host keys in a data bag called "`ssh_known_hosts`". See below for details.
 
+NOTE: The `ssh_known_hosts_entry` resource is now built into Chef 14.4+. When Chef 15.4 is released (April 2019) this resource will be removed from this cookbook as all users should be on Chef 14.4+.
+
 ## Requirements
 
 ### Platforms
