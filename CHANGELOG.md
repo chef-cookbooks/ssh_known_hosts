@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 6.1.3 (2018-09-04)
+
+- Allow additional query params in Chef search
+- The `ssh_known_hosts_entry` resource is now built into Chef 14.4+. When Chef 15.4 is released (April 2019) this resource will be removed from this cookbook as all users should be on Chef 14.4+.
+
 ## 6.1.2 (2018-04-27)
 
 - Use root_group for the group ownership to support macOS and BSD
