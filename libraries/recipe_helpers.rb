@@ -46,7 +46,7 @@ module SshknownhostsRecipeHelpers
         {
           'fqdn' => fqdn_from_node(host),
           'key' => host[key_type],
-          'key_type' => key_type
+          'key_type' => key_type,
         }
       end
     end
