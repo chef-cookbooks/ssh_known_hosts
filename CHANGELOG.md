@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 6.2.0 (2018-09-10)
+
+- Add all known keys to the known hosts by default, but add option to keep old behaviour.
+- Make names of resources with different key types unique
+
 ## 6.1.3 (2018-09-04)
 
 - Allow additional query params in Chef search
