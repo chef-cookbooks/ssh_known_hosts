@@ -18,7 +18,9 @@
 #
 
 default['ssh_known_hosts']['file'] = '/etc/ssh/ssh_known_hosts'
-default['ssh_known_hosts']['key_type'] = 'rsa,dsa'
+default['ssh_known_hosts']['key_types'] = %w(ed25519 ecdsa rsa dsa)
+default['ssh_known_hosts']['first_key_only'] = false
+
 default['ssh_known_hosts']['cacher']['data_bag'] = 'server_data'
 default['ssh_known_hosts']['cacher']['data_bag_item'] = 'known_hosts'
 default['ssh_known_hosts']['node_search_query'] = ''
