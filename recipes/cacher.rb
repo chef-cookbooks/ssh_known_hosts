@@ -1,4 +1,3 @@
-
 all_host_keys = ssh_known_hosts_partial_query('keys:*')
 Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
 
