@@ -124,6 +124,7 @@ The following attributes are set on a per-platform basis, see the `attributes/de
 - `node['ssh_known_hosts']['key_type']` - Determines which key type ssh-keyscan will use to determine the host key, different systems will have different available key types, check your manpage for available key types for ssh-keyscan. Defaults to 'rsa,dsa'
 - `node['ssh_known_hosts']['use_data_bag_cache']` - Use the data bag maintained by the cacher server to build `/etc/ssh/ssh_known_hosts` instead of a direct search (requires that a node be set up to run the cacher recipe regularly).
 - `node['ssh_known_hosts']['cacher']['data_bag']`/`node['ssh_known_hosts']['cacher']['data_bag_item']` - Data bag where cacher recipe should store its keys.
+- `node['ssh_known_hosts']['cacher']['node_search_query']` - Additional query string to apply to the cacher search (useful in large environments)
 - `node['ssh_known_hosts']['node_search_query']` - Additional query string to apply to the search
 
 ## License & Authors
