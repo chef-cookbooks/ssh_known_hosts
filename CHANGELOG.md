@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## 7.0.0 (2019-06-10)
+
+### Breaking Changes
+  - Requires Chef 14.4 or later
+  - Removes the ::deprecated recipe that was undocumented, but included for long back backwards compatibility
+  - Removes the resource which is now included in Chef 14.4 or later
+
 ## 6.2.0 (2018-09-10)
 
 - Add all known keys to the known hosts by default, but add option to keep old behaviour.
