@@ -77,25 +77,3 @@ platforms:
   driver:
     image: dokken/opensuse-leap-15
     pid_one_command: /bin/systemd
-
-suites:
-- name: default
-  run_list:
-  - recipe[ssh_known_hosts_test]
-  attributes: {}
-- name: default-query
-  run_list:
-  - recipe[ssh_known_hosts_test]
-  attributes:
-    ssh_known_hosts:
-      node_query_search: 'AND chef_environment:stage'
-- name: cacher
-  run_list:
-  - recipe[ssh_known_hosts_test::cacher]
-  attributes: {}
-- name: cacher-client
-  run_list:
-  - recipe[ssh_known_hosts_test::default]
-  attributes:
-    ssh_known_hosts:
-      use_data_bag_cache: true
