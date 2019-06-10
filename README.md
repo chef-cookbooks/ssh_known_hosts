@@ -2,15 +2,12 @@
 
 [![Build Status](https://travis-ci.org/chef-cookbooks/ssh_known_hosts.svg?branch=master)](http://travis-ci.org/chef-cookbooks/ssh_known_hosts) [![Cookbook Version](https://img.shields.io/cookbook/v/ssh_known_hosts.svg)](https://supermarket.chef.io/cookbooks/ssh_known_hosts)
 
-The Chef `ssh_known_hosts` cookbook exposes a resource as well as a recipe for adding hosts and keys to the `/etc/ssh/ssh_known_hosts` file, the global file for public keys on known hosts.
-
 - The default recipe builds `/etc/ssh/ssh_known_hosts` based either on search indexes using `rsa,dsa` key types and ohai data **or**, when `['ssh_known_hosts']['use_data_bag_cache']` is `true`, on the contents of a data bag that is maintained by the `cacher` recipe running on a worker node.
 - The cacher recipe builds and maintains a data bag based on search indexes using `rsa,dsa` key types and ohai data.
-- The resource provides a way to add custom entries in your own recipes.
 
 You can also optionally put other host keys in a data bag called "`ssh_known_hosts`". See below for details.
 
-NOTE: The `ssh_known_hosts_entry` resource is now built into Chef 14.4+. When Chef 15.4 is released (April 2019) this resource will be removed from this cookbook as all users should be on Chef 14.4+.
+WARNING: The `ssh_known_hosts_entry` resource is now built into Chef 14.4+ and no longer ships in this cookbook.
 
 ## Requirements
 
@@ -20,66 +17,7 @@ NOTE: The `ssh_known_hosts_entry` resource is now built into Chef 14.4+. When Ch
 
 ### Chef
 
-- 12.11+
-
-## Resource
-
-### ssh_known_hosts_entry
-
-Use the `ssh_known_hosts_entry` resource to append an entry for the specified host in `/etc/ssh/ssh_known_hosts`. For example:
-
-#### Actions
-
-- `:create` - Create an entry (default)
-- `:flush` - Immediately flush the entries to the config file (see example below)
-
-#### Properties
-
-Property      | Description                                                                                                      | Example                          | Default
-------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------
-host          | The host to add to the known hosts file.                                                                         | 'github.com'                     | the resource name
-key           | (optional) The key for the host. If not provided this will be automatically determined.                          | ssh-rsa ...                      | ssh-keyscan -H #{host}
-key_type      | (optional) The type of key to store.                                                                             | 'dsa'                            | rsa
-port          | (optional) The server port that ssh-keyscan will use to gather the public key.                                   | 2222                             | 22
-timeout       | (optional) The timeout in seconds for ssh-keyscan.                                                               | 90                               | 30
-mode          | (optional) The file mode for the ssh_known_hosts file.                                                           | '0644'                           | '0644'
-owner         | (optional) The file owner for the ssh_known_hosts file.                                                          | 'root'                           | 'root'
-group         | (optional) The file group for the ssh_known_hosts file.                                                          | 'wheel'                          | 'root'
-hash_entries  | (optional) Hash the hostname and addresses in the ssh_known_hosts file for privacy.                              | true                             | false
-file_location | (optional) The location of the ssh known hosts file. Change this to set a known host file for a particular user. | '/Users/tsmith/.ssh/known_hosts' | '/etc/ssh/ssh_known_hosts'
-
-#### Examples
-
-Add a single entry for github.com:
-
-```ruby
-ssh_known_hosts_entry 'github.com'
-```
-
-This will append an entry in `/etc/ssh/ssh_known_hosts` like this:
-
-```text
-# github.com SSH-2.0-OpenSSH_5.5p1 Debian-6+squeeze1+github8
-github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-```
-
-You can optionally specify your own key, if you don't want to use `ssh-keyscan`:
-
-```ruby
-ssh_known_hosts_entry 'github.com' do
-  key 'node.example.com ssh-rsa ...'
-end
-```
-
-The latest design of this cookbook only writes the `/etc/ssh/ssh_known_hosts` file at the very end of the chef-client run. In order to force it to update the template earlier use the `:flush` action:
-
-```ruby
-ssh_known_hosts_entry "doesn't matter" do
-  action :flush
-end
-```
-
-The user is responsible for only calling the flush action at the end of constructing their entries. Calling it first is illegal, calling it in the middle will result with partial content written to disk and chef-client will always show at least two resources being updated (and flapping).
+- 14.4+
 
 ## Recipes
 
@@ -130,7 +68,7 @@ The following attributes are set on a per-platform basis, see the `attributes/de
 
 **Author:** Cookbook Engineering Team ([cookbooks@chef.io](mailto:cookbooks@chef.io))
 
-**Copyright:** 2008-2018, Chef Software, Inc.
+**Copyright:** 2008-2019, Chef Software, Inc.
 
 ```
 Licensed under the Apache License, Version 2.0 (the "License");
