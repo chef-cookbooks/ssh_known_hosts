@@ -4,18 +4,22 @@ driver:
 provisioner:
   name: chef_zero
   deprecations_as_errors: true
+  chef_license: accept-no-persist
 
 verifier:
   name: inspec
 
 platforms:
+  - name: amazonlinux
+    driver_config:
+      box: mvbcoding/awslinux
+  - name: amazonlinux-2
   - name: centos-6
   - name: centos-7
   - name: debian-8
   - name: debian-9
-  - name: fedora-28
+  - name: fedora-29
   - name: opensuse-leap-42
-  - name: ubuntu-14.04
   - name: ubuntu-16.04
   - name: ubuntu-18.04
 
@@ -40,6 +44,3 @@ suites:
   attributes:
     ssh_known_hosts:
       use_data_bag_cache: true
-- name: resource
-  run_list:
-  - recipe[ssh_known_hosts_test::resource]
