@@ -92,4 +92,4 @@ module SshknownhostsRecipeHelpers
   end
 end
 
-Chef::DSL::Recipe.send(:include, SshknownhostsRecipeHelpers)
+Chef::DSL::Recipe.include SshknownhostsRecipeHelpers
