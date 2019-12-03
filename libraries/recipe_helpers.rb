@@ -78,7 +78,7 @@ module SshknownhostsRecipeHelpers
 
   # takes node-ish object and finds a useful enough fqdn
   def fqdn_from_node(node)
-    node['fqdn'] || node['ipaddress'] || node['hostname']
+    [node['fqdn'], node['ipaddress'], node['hostname']].reject { |n| n.nil? || n.empty? }.join(',')
   end
 
   def key_types_from_node(data)
