@@ -30,7 +30,7 @@ unless (defined? existing_data_bag_content) &&
 
   Chef::Log.debug('Data bag contents differ.  Saving updates.')
 
-  host_key_db_item = Chef::DataBagItem.new # ~FC086
+  host_key_db_item = Chef::DataBagItem.new
   host_key_db_item.data_bag(node['ssh_known_hosts']['cacher']['data_bag'])
   host_key_db_item.raw_data = new_data_bag_content
 
