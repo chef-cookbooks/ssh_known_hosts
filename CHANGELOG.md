@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## Unreleased
+
+- resolved cookstyle error: libraries/recipe_helpers.rb:2:1 refactor: `ChefStyle/CommentFormat`
+
 ## 7.0.0 (2019-06-10)
 
 ### Breaking Changes
