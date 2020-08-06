@@ -22,7 +22,6 @@ env:
   - INSTANCE=default-ubuntu-1804
   - INSTANCE=default-centos-6
   - INSTANCE=default-centos-7
-  - INSTANCE=default-opensuse-leap-42
   - INSTANCE=default-opensuse-leap-15
   - INSTANCE=default-query-centos-6
   - INSTANCE=default-query-centos-7
