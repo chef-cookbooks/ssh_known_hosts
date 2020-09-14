@@ -1,5 +1,5 @@
 # These are intended to be public APIs and are deliberately injected into the
-# Recipe DSL for use by end-users.  They should really get documented in
+# Recipe:: DSL for use by end-users.  They should really get documented in
 # the README.md
 
 module SshknownhostsRecipeHelpers
