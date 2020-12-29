@@ -3,7 +3,6 @@
   "automatic": {
     "hostname": "host-3",
     "fqdn": "host-3.vagrantup.com",
-    "ipaddress": "10.0.2.17",
     "keys": {
       "ssh": {
         "host_rsa_public": "TEST_RSA_PUBLIC_KEY_HOST-3",

@@ -1,7 +1,7 @@
 {
   "name": "host-2",
   "automatic": {
-    "hostname": "host-2",
+    "hostname": "",
     "fqdn": "host-2.vagrantup.com",
     "ipaddress": "10.0.2.17",
     "keys": {
