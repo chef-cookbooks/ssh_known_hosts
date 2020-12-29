@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the ssh_known_hosts cookbook.
 
+## Unreleased
+
+- Put all machine identities into known hosts file
+
 ## 7.0.0 (2019-06-10)
 
 ### Breaking Changes
