@@ -1,4 +1,8 @@
-all_host_keys = ssh_known_hosts_partial_query('keys:*')
+
+node_query = 'keys:*'
+node_query << " #{node['ssh_known_hosts']['cacher']['node_search_query']}" unless node['ssh_known_hosts']['cacher']['node_search_query'].empty?
+
+all_host_keys = ssh_known_hosts_partial_query(node_query)
 Chef::Log.debug("Partial search got: #{all_host_keys.inspect}")
 
 new_data_bag_content = {
