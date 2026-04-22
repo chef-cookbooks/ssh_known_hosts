@@ -7,7 +7,7 @@
 # Author:: Seth Vargo (<sethvargo@gmail.com>)
 #
 # Copyright:: 2009-2017, Adapp, Inc.
-# Copyright:: 2011-2019, Chef Software, Inc.
+# Copyright:: Copyright (c) 2012-2021 Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
